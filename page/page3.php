@@ -5,7 +5,7 @@
         <title>IM Quality Report</title>
         <script>
         Ext.Loader.setConfig({enabled: true});
-		Ext.Loader.setPath('Ext.ux', '../extjs-4.2.2/examples/ux/');
+		Ext.Loader.setPath('Ext.ux', '../framework/extjs-4.2.2/examples/ux/');
         
         Ext.onReady( function() {
             Ext.QuickTips.init();

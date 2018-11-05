@@ -35,8 +35,8 @@
 				<link rel="stylesheet" href="css/style.css">
 				<link rel="stylesheet" href="css/icon-style.css">
 				<link rel="shortcut icon" href="img/iqrs.png">
-				<script type="text/javascript" src="../extjs-4.2.2/ext-all.js"></script>
-				<link rel="stylesheet" type="text/css" href="../extjs-4.2.2/resources/css/ext-all-gray.css" />
+				<script type="text/javascript" src="../framework/extjs-4.2.2/ext-all.js"></script>
+				<link rel="stylesheet" type="text/css" href="../framework/extjs-4.2.2/resources/css/ext-all-gray.css" />
 			</head>
 			<body>
 				<?php 
