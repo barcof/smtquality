@@ -1,0 +1,39 @@
+.refresh {
+background-image:url(../icons/refresh.png) !important;
+}
+.input {
+background-image:url(../icons/input.png) !important;
+}
+.grid {
+background-image:url(../icons/grid.png) !important;
+}
+.search {
+background-image:url(../icons/search.png) !important;
+}
+.submit {
+background-image:url(../icons/submit.png) !important;
+}
+.setting {
+background-image:url(../icons/setting.png) !important;
+}
+.add {
+background-image:url(../icons/add.png) !important;
+}
+.delete {
+background-image:url(../icons/delete.png) !important;
+}
+.update {
+background-image:url(../icons/update.png) !important;
+}
+.edit {
+background-image:url(../icons/edit.png) !important;
+}
+.reject {
+background-image:url(../icons/reject.png) !important;
+}
+.download {
+background-image:url(../icons/download.png) !important;
+}
+.machine-16 {
+background-image:url(../icons/machine-16.png) !important;
+}

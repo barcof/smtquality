@@ -1,0 +1,32 @@
+CREATE PROCEDURE dbo.DisplayInqual 
+(@start int, @maxct int, @totalcount int output)
+AS
+BEGIN
+  set nocount on
+  declare
+  	@ubound int;
+    
+    if @start < 1 set @start = 1
+    if @maxct < 1 set @maxct = 1
+    set @ubound = @start + @maxct;
+    
+    set @totalcount = (select count(*) from tb_inqual)
+    select inputid,dateid,fld_group,fld_shift,tb_mcname.mchname,model_name,
+    		start_serial,lot_no,lot_qty,pcb_name,pwb_no,fld_proc,
+            tb_ai.ainame,tb_prcode.problemname,loc,magazineno,tb_ng.ngname,
+            board_ke,board_ng_qty,point_ng_qty,
+    		convert(varchar(19),inputdate,120) as inputdate,
+            cast(@totalcount as varchar(10)) as totalcount
+    from (
+    	--select row_number() over(order by CONVERT(varchar(10),dateid,103) desc) as row, *
+        select row_number() over(order by inputid desc) as row, *
+        from tb_inqual  
+    ) as tbl
+    left join tb_mcname on tbl.mch_name=tb_mcname.mchno
+    left join tb_ai on tbl.ai=tb_ai.aino
+    left join tb_prcode on tbl.smt=tb_prcode.problemno
+    left join tb_ng on tbl.ng=tb_ng.ngno
+    where row >= convert(varchar(9), @start) and
+    		row < convert(varchar(9), @ubound)
+    order by CONVERT(varchar(10),tb_mcname.mchname) asc, inputdate desc
+END

@@ -1,0 +1,112 @@
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../font/Ubuntu-Regular.ttf');
+}
+*{
+    padding:0;
+    margin:0;
+    font-family: 'Ubuntu', sans-serif;
+	outline: none !important;
+    _font-size: 14px;
+    _color: firebrick;
+}
+body{
+    _background: WhiteSmoke;
+    background-image: url(../img/banner.jpg);
+	background-repeat: no-repeat;
+    background-position: top;
+    background-size: 100% 1024px;
+}
+header{
+    _background: linear-gradient(to top, #F0CB35, #f8e6a0);
+    _background: rgba(251, 251, 251, 0.1);
+    background: #008080;
+    padding: 5px 0 5px 100px;
+    _box-shadow: 0 2px 5px firebrick;
+	max-width: 100%;
+    height: auto;
+}
+#txt-header{
+    position:absolute;
+    right:200px;
+    top:10px;
+}
+#txt-header p{
+    color:#fff;
+    font-size: 20px;
+    _font-style: italic;
+}
+nav{
+    _background:linear-gradient(to top, #3fa69c 60%, #45b8ac);
+    background:#fff ;
+    box-shadow: 0 3px 5px #9f9f9f;
+}
+nav ul{
+    list-style-type: none;
+    margin: 0;
+    padding-right: 20px;
+    overflow: hidden;
+    _position: absolute;
+    _top: 40px;
+    _right: 0;
+}
+nav li a {
+    color: #008080;
+    cursor:pointer;
+    display: block;
+    font-size: 20px;
+    padding: 10px 10px 10px 10px;
+    text-decoration: none;
+	transition: 0.5s ease-out !important;
+	border-bottom: 5px solid white;
+}
+nav li .pic{
+	position: relative;
+	color: #008080;
+	text-align: center;
+	font-size: 20px;
+	padding: 10px 10px 10px 10px;
+	text-decoration: underline;
+	/*border-bottom: 5px solid #008080;
+	border-left: 5px dashed #008080;
+	border-right: 5px dashed #008080;*/
+	
+}
+.right{
+	float: right;
+}
+.left{
+	float: left;
+}
+.first{
+	margin-left:20px;
+}
+.logout{
+	padding-right:10px;
+	background: none;
+}
+nav li a:hover{
+	border-bottom: 5px solid #008080;
+}
+.wrapper{
+    color: #555555;
+    _margin: 5px;
+    padding: 5px;
+    border-radius: 0.5px;
+    background: rgba(230, 230, 230, 0.1);
+    _box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 5px rgba(34, 34, 34, 0.19);
+    height: 500px;
+}
+/*---extjs class---*/
+.x-panel-header{
+	background:#008080 !important;
+	border:1px #008080 !important;
+}
+.x-panel-header-text{
+	color:white !important;
+}
+.x-header-text{
+	padding: 0 !important;
+}
