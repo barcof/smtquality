@@ -10,9 +10,9 @@
 	$limit 	= @$_REQUEST["limit"];
 	$start	= ($page*$limit)+1;
 
-	//$mchname 	= isset($_REQUEST['src_mch']) ? $_REQUEST['src_mch'] : '';
-	//$modelname 	= isset($_REQUEST['src_model']) ? $_REQUEST['src_model'] : '';
-	//$stserial 	= isset($_REQUEST['src_stserial']) ? $_REQUEST['src_stserial'] : 0;
+	$mchname 	= isset($_REQUEST['src_mch']) ? $_REQUEST['src_mch'] : '';
+	$modelname 	= isset($_REQUEST['src_model']) ? $_REQUEST['src_model'] : '';
+	$stserial 	= isset($_REQUEST['src_stserial']) ? $_REQUEST['src_stserial'] : '';
 	//$lotno 		= isset($_REQUEST['src_lotno']) ? $_REQUEST['src_lotno'] : '';
 	//$pcbname	= isset($_REQUEST['src_pcbname']) ? $_REQUEST['src_pcbname'] : '';
 	//$pwbno		= isset($_REQUEST['src_pwbno']) ? $_REQUEST['src_pwbno'] : '';
@@ -23,10 +23,10 @@
 	
 			//$rs 			= $db->Execute(" declare @totalcount as int
 			//									exec DisplayInqual $start, $limit, '{$mchname}', '{$modelname}', {$stserial}, '{$lotno}', //'{$pcbname}', '{$pwbno}', '{$proc}', @totalcount=@totalcount out");
-			$rs 			= $db->Execute(" declare @totalcount as int
-												exec DisplayInqual $start, $limit, '$boardid', @totalcount=@totalcount out");
-			$totalcount 	= $rs->fields['23'];
-			$return 		= array();
+			// echo " declare @totalcount as int exec DisplayInqual $start, $limit, '{$boardid}', '{$mchname}', '{$modelname}', '{$stserial}', @totalcount=@totalcount out";
+			$rs = $db->Execute(" declare @totalcount as int exec DisplayInqual $start, $limit, '{$boardid}', '{$mchname}', '{$modelname}', '{$stserial}', @totalcount=@totalcount out");
+			$totalcount = $rs->fields['23'];
+			$return = array();
 			
 	//	-----***-----  //
 	

@@ -193,12 +193,17 @@
 			extend	: 'Ext.data.Model',
 			fields	: ['rejectid', 'inputid', 'partno', 'qtyselect', 'qtyng', 'repairedby', 'howtorepair', 'checkedby', 'fld_result', 'fld_desc', 'pic', 'file_name', 'reelno', 'inputdate','mdcode']
 		});
+		Ext.define('get_partno_repair',{
+			extend	: 'Ext.data.Model',
+			fields 	: ['partno']
+		});
+
 		var cbx_howtorepair = Ext.create('Ext.data.Store', {
 			fields: ['catval'],
 			data : [
 				{ "catval":"Touch Up" },
-				{ "catval":"Change Part" },
-				{ "catval":"Touch Up + Change Part" }
+				{ "catval":"Change Part" }
+				// { "catval":"Touch Up + Change Part" }
 			]
 		});
 		var data_store = Ext.create('Ext.data.Store',{
@@ -376,21 +381,46 @@
 				}
 			}
 		});
+		var get_partno = Ext.create('Ext.data.Store',{
+			model : 'get_partno_repair',
+			autoLoad: true,
+			proxy : {
+				type: 'ajax',
+				url: 'json/json_get_partno.php',
+				reader: {
+					type : 'json',
+					root : 'rows'
+				}
+			},
+			listeners: {
+				load: function(store, records) {
+					// console.log(records[0].get('partno'));
+					// if (store.getAt(0) == 'undefined') {
+						
+					// } else {
+					// 	store.getAt(0).get('partno');
+					// }
+					// console.log(store.getAt(0).get('partno'));
+					// Ext.getCmp('fld_part').setValue(store.getAt(0).get('partno'));
+					Ext.getCmp('fld_part').setValue(records[0].get('partno'));
+				}
+			}
+		});
 
 			//	All about function
 				// ***
-						//	function untuk fontsize grid
-								function upsize(val) {
-									return '<font style="white-space:normal;">' + val + '</font>';
-								}
-								function content(val) {
-									return '<font size="2" style="font-family:sans-serif; white-space:normal;">' + Ext.String.ellipsis(val, 250, false) + '</font>';
-								}
-						//	end function untuk column bigsize
+					//	function untuk fontsize grid
+							function upsize(val) {
+								return '<font style="white-space:normal;">' + val + '</font>';
+							}
+							function content(val) {
+								return '<font size="2" style="font-family:sans-serif; white-space:normal;">' + Ext.String.ellipsis(val, 250, false) + '</font>';
+							}
+					//	end function untuk column bigsize
 
-						//	function required
-								var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
-						//	end of function required
+					//	function required
+							var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
+					//	end of function required
 			// ----***----  //
 
 			//	Grid data
@@ -566,11 +596,11 @@
 											handler : function (){
 												data_store.proxy.setExtraParam('src_mch', '');
 												data_store.proxy.setExtraParam('src_model', '');
-												data_store.proxy.setExtraParam('src_stserial', 0);
-												data_store.proxy.setExtraParam('src_lotno', '');
-												data_store.proxy.setExtraParam('src_pcbname', '');
-												data_store.proxy.setExtraParam('src_pwbno', '');
-												data_store.proxy.setExtraParam('src_proc', '');
+												data_store.proxy.setExtraParam('src_stserial', '');
+												// data_store.proxy.setExtraParam('src_lotno', '');
+												// data_store.proxy.setExtraParam('src_pcbname', '');
+												// data_store.proxy.setExtraParam('src_pwbno', '');
+												// data_store.proxy.setExtraParam('src_proc', '');
 												data_store.proxy.setExtraParam('src_boardid', '');
 												data_store.loadPage(1);
 												cbx_prcode.loadPage(1);
@@ -859,11 +889,11 @@
 											handler : function (){
 												data_store.proxy.setExtraParam('src_mch', '');
 												data_store.proxy.setExtraParam('src_model', '');
-												data_store.proxy.setExtraParam('src_stserial', 0);
-												data_store.proxy.setExtraParam('src_lotno', '');
-												data_store.proxy.setExtraParam('src_pcbname', '');
-												data_store.proxy.setExtraParam('src_pwbno', '');
-												data_store.proxy.setExtraParam('src_proc', '');
+												data_store.proxy.setExtraParam('src_stserial', '');
+												// data_store.proxy.setExtraParam('src_lotno', '');
+												// data_store.proxy.setExtraParam('src_pcbname', '');
+												// data_store.proxy.setExtraParam('src_pwbno', '');
+												// data_store.proxy.setExtraParam('src_proc', '');
 												data_store.loadPage(1);
 												cbx_prcode.loadPage(1);
 												cbx_mch.loadPage(1);
@@ -1153,11 +1183,11 @@
 											handler    : function (){
 												data_store.proxy.setExtraParam('src_mch', '');
 												data_store.proxy.setExtraParam('src_model', '');
-												data_store.proxy.setExtraParam('src_stserial', 0);
-												data_store.proxy.setExtraParam('src_lotno', '');
-												data_store.proxy.setExtraParam('src_pcbname', '');
-												data_store.proxy.setExtraParam('src_pwbno', '');
-												data_store.proxy.setExtraParam('src_proc', '');
+												data_store.proxy.setExtraParam('src_stserial', '');
+												// data_store.proxy.setExtraParam('src_lotno', '');
+												// data_store.proxy.setExtraParam('src_pcbname', '');
+												// data_store.proxy.setExtraParam('src_pwbno', '');
+												// data_store.proxy.setExtraParam('src_proc', '');
 												data_store.loadPage(1);
 												cbx_prcode.loadPage(1);
 												cbx_mch.loadPage(1);
@@ -3499,9 +3529,17 @@
 					});
 				} else {
 					var win_rejection;
-					var inputid 	= rec[0].data.inputid;
-					var symptom 	= rec[0].data.smt;
-					var location 	= rec[0].data.loc;
+					var model = rec[0].data.model_name;
+					var inputid = rec[0].data.inputid;
+					var symptom = rec[0].data.smt;
+					var location = rec[0].data.loc;
+					var pcb_name = rec[0].data.pcb_name;
+					var process = rec[0].data.process;
+					get_partno.proxy.setExtraParam('model_name', model);
+					get_partno.proxy.setExtraParam('location', location);
+					get_partno.proxy.setExtraParam('pcb_name', pcb_name);
+					get_partno.proxy.setExtraParam('process', process);
+					get_partno.loadPage(1);
 					rejection_store.proxy.setExtraParam('inputid', inputid);
 					rejection_store.loadPage(1);
 
@@ -3566,8 +3604,8 @@
 														{ 	fieldLabel			: 'Part No',
 															id					: 'fld_part',
 															name				: 'fld_part',
-															afterLabelTextTpl	: required,
-															allowBlank			: false,
+															// afterLabelTextTpl	: required,
+															// allowBlank			: false,
 															labelSeparator		: ' ',
 															listeners: {
 																specialkey: function(field, e) {
@@ -3582,12 +3620,36 @@
 																		// 	Ext.Msg.alert('INFORMATION','<span style="color:green;font-size:32px">Part OK !</span>');
 																		// }
 																	}
-												                },
-												                change:function(field){
-													                field.setValue(field.getValue().toUpperCase());
-													            }
+																},
+																change:function(field){
+																	field.setValue(field.getValue().toUpperCase());
+																}
 															}
-														},{ fieldLabel			: 'Qty Select',
+														},
+														// { 	xtype: 'combo',
+														// 	fieldLabel: 'Combo Part No',
+														// 	id					: 'fld_cbxpart',
+														// 	name				: 'fld_cbxpart',
+														// 	afterLabelTextTpl	: required,
+														// 	allowBlank			: false,
+														// 	store 				: get_partno,
+														// 	queryMode 			: 'local',
+														// 	displayField		: 'partno',
+														// 	valueField			: 'partno',
+														// 	listeners 			: {
+														// 		specialkey: function(field, e) {
+														// 			if (e.getKey() == e.ENTER) {
+														// 				var reel = field.getValue().substr(0,15);
+														// 				// alert(reel);
+														// 				field.setValue(reel);
+														// 			}
+														// 		}
+														// 		// change:function(field){
+														// 		// 	field.setValue(field.getValue().toUpperCase());
+														// 		// }
+														// 	}
+														// },
+														{ fieldLabel			: 'Qty Select',
 															id					: 'fld_selectqty',
 															name				: 'fld_selectqty',
 														   	maskRe				: /[0-9.,]/,
@@ -3695,10 +3757,14 @@
 																var reel = field.getValue().substr(0,15);
 																var part = Ext.getCmp('fld_part').getValue();
 																if (reel != part) {
-																	Ext.Msg.alert('WARNING','<span style="color:red;font-size:32px">Wrong Part !</span>');
+																	Ext.Msg.alert('WARNING','<span style="color:red;font-size:32px;text-align:center">Wrong Part !</span>');
 																	field.reset();
 																} else {
-																	Ext.Msg.alert('INFORMATION','<span style="color:green;font-size:32px">Part OK !</span>');
+																	if (reel == '' || part == '') {
+																		Ext.Msg.alert('WARNING','<span style="color:red;font-size:32px;text-align:center">Part not yet input</span>');
+																	} else {
+																		Ext.Msg.alert('INFORMATION','<span style="color:green;font-size:32px;text-align:center">Part OK !</span>');
+																	}
 																}
 															}
 										                },
@@ -4162,6 +4228,7 @@
 				}
 			}
 
+			//-----------------------------------------------------[-Searc Quality-]
 			function search(){
 				var win_search;
 
@@ -4189,8 +4256,7 @@
 								fieldLabel			: 'Machine Name',
 								id					: 'src_mch',
 								name				: 'src_mch',
-								afterLabelTextTpl	: required,
-								allowBlank			: false,
+								// afterLabelTextTpl	: required,
 								labelSeparator		: ' ',
 								queryMode			: 'local',
 								store				: cbx_mch,
@@ -4201,51 +4267,51 @@
 								fieldLabel			: 'Model Name',
 								id					: 'src_model',
 								name				: 'src_model',
-								afterLabelTextTpl	: required,
-								allowBlank			: false,
+								// afterLabelTextTpl	: required,
 								labelSeparator		: ' '
 							},{
 								xtype				: 'textfield',
 								fieldLabel			: 'Start Serial',
 								id					: 'src_stserial',
 								name				: 'src_stserial',
-								afterLabelTextTpl	: required,
-								allowBlank			: false,
+								// afterLabelTextTpl	: required,
 								labelSeparator		: ' ',
 								maskRe				: /[0-9]/
-							},{
-								xtype				: 'textfield',
-								fieldLabel			: 'Lot No',
-								id					: 'src_lotno',
-								name				: 'src_lotno',
-								afterLabelTextTpl	: required,
-								allowBlank			: false,
-								labelSeparator		: ' '
-							},{
-								xtype				: 'textfield',
-								fieldLabel			: 'PCB Name',
-								id					: 'src_pcbname',
-								name				: 'src_pcbname',
-								afterLabelTextTpl	: required,
-								allowBlank			: false,
-								labelSeparator		: ' ',
-							},{
-								xtype				: 'textfield',
-								fieldLabel			: 'PWB No',
-								id					: 'src_pwbno',
-								name				: 'src_pwbno',
-								afterLabelTextTpl	: required,
-								allowBlank			: false,
-								labelSeparator		: ' '
-							},{
-								xtype				: 'textfield',
-								fieldLabel			: 'Process',
-								id					: 'src_proc',
-								name				: 'src_proc',
-								afterLabelTextTpl	: required,
-								allowBlank			: false,
-								labelSeparator		: ' '
-							},{
+							},
+							// {
+							// 	xtype				: 'textfield',
+							// 	fieldLabel			: 'Lot No',
+							// 	id					: 'src_lotno',
+							// 	name				: 'src_lotno',
+							// 	afterLabelTextTpl	: required,
+							// 	allowBlank			: false,
+							// 	labelSeparator		: ' '
+							// },{
+							// 	xtype				: 'textfield',
+							// 	fieldLabel			: 'PCB Name',
+							// 	id					: 'src_pcbname',
+							// 	name				: 'src_pcbname',
+							// 	afterLabelTextTpl	: required,
+							// 	allowBlank			: false,
+							// 	labelSeparator		: ' ',
+							// },{
+							// 	xtype				: 'textfield',
+							// 	fieldLabel			: 'PWB No',
+							// 	id					: 'src_pwbno',
+							// 	name				: 'src_pwbno',
+							// 	afterLabelTextTpl	: required,
+							// 	allowBlank			: false,
+							// 	labelSeparator		: ' '
+							// },{
+							// 	xtype				: 'textfield',
+							// 	fieldLabel			: 'Process',
+							// 	id					: 'src_proc',
+							// 	name				: 'src_proc',
+							// 	afterLabelTextTpl	: required,
+							// 	allowBlank			: false,
+							// 	labelSeparator		: ' '
+							// },
+							{
 								xtype		: 'button',
 								text		: 'Search',
 								iconCls		: 'search',
@@ -4258,10 +4324,6 @@
 									data_store.proxy.setExtraParam('src_mch', Ext.getCmp('src_mch').getValue());
 									data_store.proxy.setExtraParam('src_model', Ext.getCmp('src_model').getValue());
 									data_store.proxy.setExtraParam('src_stserial', Ext.getCmp('src_stserial').getValue());
-									data_store.proxy.setExtraParam('src_lotno', Ext.getCmp('src_lotno').getValue());
-									data_store.proxy.setExtraParam('src_pcbname', Ext.getCmp('src_pcbname').getValue());
-									data_store.proxy.setExtraParam('src_pwbno', Ext.getCmp('src_pwbno').getValue());
-									data_store.proxy.setExtraParam('src_proc', Ext.getCmp('src_proc').getValue());
 									data_store.loadPage(1);
 								}
 							}
@@ -4271,8 +4333,8 @@
 						title			: '<p style="color:#000">Search Data',
 						width			: 350,
 						minWidth		: 350,
-						height			: 310,
-						minHeight		: 310,
+						// height			: 310,
+						// minHeight		: 310,
 						layout			: 'fit',
 						animateTarget	: 'btn_src',
 						items			: form_search,
@@ -4284,19 +4346,19 @@
 						border			: false,
 						listeners		:{
 							activate:function(){
-								Ext.getCmp('btn_input').disable();
-								Ext.getCmp('btn_update').disable();
-								Ext.getCmp('btn_add_reject').disable();
-								Ext.getCmp('btn_settings').disable();
-								Ext.getCmp('btn_download').disable();
+								// Ext.getCmp('btn_input').disable();
+								// Ext.getCmp('btn_update').disable();
+								// Ext.getCmp('btn_add_reject').disable();
+								// Ext.getCmp('btn_settings').disable();
+								// Ext.getCmp('btn_download').disable();
 								Ext.getCmp('btn_src').disable();
 							},
 							close:function(){
-								Ext.getCmp('btn_input').enable();
-								Ext.getCmp('btn_update').enable();
-								Ext.getCmp('btn_add_reject').enable();
-								Ext.getCmp('btn_settings').enable();
-								Ext.getCmp('btn_download').enable();
+								// Ext.getCmp('btn_input').enable();
+								// Ext.getCmp('btn_update').enable();
+								// Ext.getCmp('btn_add_reject').enable();
+								// Ext.getCmp('btn_settings').enable();
+								// Ext.getCmp('btn_download').enable();
 								Ext.getCmp('btn_src').enable();
 							}
 						}
