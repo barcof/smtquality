@@ -45,6 +45,9 @@
 				?>
 				<section>
 					<div class="wrapper">
+						<div id="section">
+							
+						</div>
 						<?php if(!empty($_REQUEST['page'])){
 							$page_dir = 'page';
 							$thispages = scandir($page_dir);

@@ -1,8 +1,8 @@
-<!doctype html>
+<!-- <!doctype html>
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-        <title>IM Quality Report</title>
+        <title>IM Quality Report</title> -->
         <script>
         Ext.Loader.setConfig({enabled: true});
 		Ext.Loader.setPath('Ext.ux', '../framework/extjs-4.2.2/examples/ux/');
@@ -787,10 +787,10 @@
 			}
 		});
         </script>
-    </head>
+<!--     </head>
     <body>
         <div id="section">
             
         </div>
     </body>
-</html>
+</html> -->
