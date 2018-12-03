@@ -777,315 +777,319 @@
 						defaults		: {
 							anchor			: '100%'
 						},
-						items			: [
-							{ 	xtype			: 'container',
-								defaultType		: 'textfield',
-								width			: 320,
-								//padding			: '0 10 0 0',
-								items			: [
-								{
-									xtype				: 'hiddenfield',
-									id					: 'userlevel',
-									name				: 'userlevel',
-									value				: <?=$_SESSION['iqrs_userlevel']?>
-								},
-								{	xtype				: 'datefield',
-									id					: 'fld_date',
-									name				: 'fld_date',
-									fieldLabel			: 'Date',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									format				: 'Y-m-d',
-									listeners			: {
-										select	: function(){
-											Ext.getCmp('fld_mch').reset();
-											Ext.getCmp('fld_model').reset();
-											fld_store.proxy.setExtraParam('fld_date',Ext.getCmp('fld_date').getValue());
-										}
+						items			: [{
+							xtype: 'hiddenfield',
+							id: 'fld_inputstatus',
+							name: 'fld_inputstatus',
+							value: 0
+						},
+						{ 	xtype			: 'container',
+							defaultType		: 'textfield',
+							width			: 320,
+							//padding			: '0 10 0 0',
+							items			: [
+							{
+								xtype				: 'hiddenfield',
+								id					: 'userlevel',
+								name				: 'userlevel',
+								value				: <?=$_SESSION['iqrs_userlevel']?>
+							},
+							{	xtype				: 'datefield',
+								id					: 'fld_date',
+								name				: 'fld_date',
+								fieldLabel			: 'Date',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								format				: 'Y-m-d',
+								listeners			: {
+									select	: function(){
+										Ext.getCmp('fld_mch').reset();
+										Ext.getCmp('fld_model').reset();
+										fld_store.proxy.setExtraParam('fld_date',Ext.getCmp('fld_date').getValue());
 									}
-								},{	xtype				: 'combobox',
-									id					: 'fld_mch',
-									name				: 'fld_mch',
-									fieldLabel			: 'Machine Name',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									queryMode			: 'local',
-									store				: cbx_mch,
-									displayField		: 'mchname',
-									valueField			: 'mchno',
-									listeners			: {
-										select	: function(){
-											Ext.getCmp('cbx_model').reset();
-											Ext.getCmp('fld_model').reset();
-											Ext.getCmp('fld_stserial').reset();
-											Ext.getCmp('fld_lotno').reset();
-											Ext.getCmp('fld_lotqty').reset();
-											Ext.getCmp('fld_pcb').reset();
-											Ext.getCmp('fld_pwb').reset();
-											Ext.getCmp('fld_proc').reset();
-											Ext.getCmp('hid_proc').reset();
-											fld_store.proxy.setExtraParam('fld_mch',Ext.getCmp('fld_mch').getValue());
-											fld_store.loadPage(1);
-										},
-										change  	: function(f,new_val) {
-											Ext.getCmp('cbx_model').reset();
-											Ext.getCmp('fld_model').reset();
-										},
-										scope		: this,
-										specialkey	: function(f, e) {
-										  if (e.getKey() === e.ENTER) {
-											fld_store.proxy.setExtraParam('fld_mch',Ext.getCmp('fld_mch').getValue());
-											fld_store.loadPage(1);
-										  }
-										}
+								}
+							},{	xtype				: 'combobox',
+								id					: 'fld_mch',
+								name				: 'fld_mch',
+								fieldLabel			: 'Machine Name',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								queryMode			: 'local',
+								store				: cbx_mch,
+								displayField		: 'mchname',
+								valueField			: 'mchno',
+								listeners			: {
+									select	: function(){
+										Ext.getCmp('cbx_model').reset();
+										Ext.getCmp('fld_model').reset();
+										Ext.getCmp('fld_stserial').reset();
+										Ext.getCmp('fld_lotno').reset();
+										Ext.getCmp('fld_lotqty').reset();
+										Ext.getCmp('fld_pcb').reset();
+										Ext.getCmp('fld_pwb').reset();
+										Ext.getCmp('fld_proc').reset();
+										Ext.getCmp('hid_proc').reset();
+										fld_store.proxy.setExtraParam('fld_mch',Ext.getCmp('fld_mch').getValue());
+										fld_store.loadPage(1);
+									},
+									change  	: function(f,new_val) {
+										Ext.getCmp('cbx_model').reset();
+										Ext.getCmp('fld_model').reset();
+									},
+									scope		: this,
+									specialkey	: function(f, e) {
+									  if (e.getKey() === e.ENTER) {
+										fld_store.proxy.setExtraParam('fld_mch',Ext.getCmp('fld_mch').getValue());
+										fld_store.loadPage(1);
+									  }
 									}
-								},{ xtype				: 'combobox',
-									id					: 'cbx_model',
-									name				: 'cbx_model',
-									fieldLabel			: 'Model Name',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									queryMode			: 'local',
-									store				: fld_store,
-									displayField		: 'model_name',
-									valueField			: 'item_id',
-									listeners			: {
-										select	: function(combo, records, eOpts){
-											Ext.getCmp('fld_stserial').reset();
-											Ext.getCmp('fld_lotno').reset();
-											Ext.getCmp('fld_lotqty').reset();
-											Ext.getCmp('fld_pcb').reset();
-											Ext.getCmp('fld_pwb').reset();
-											//Ext.getCmp('fld_lotno').setValue(fld_store.getAt(0).data.prod_no);
-											Ext.getCmp('fld_model').setValue(records[0].get('model_name'));
-											Ext.getCmp('fld_stserial').setValue(records[0].get('start_serial'));
-											Ext.getCmp('fld_lotno').setValue(records[0].get('prod_no'));
-											Ext.getCmp('fld_lotqty').setValue(records[0].get('lot_size'));
-											Ext.getCmp('fld_pcb').setValue(records[0].get('pcb_name'));
-											Ext.getCmp('fld_pwb').setValue(records[0].get('pwb_no'));
-											Ext.getCmp('hid_proc').setValue(records[0].get('process'));
-											Ext.getCmp('fld_stserial').enable();
-											Ext.getCmp('fld_lotno').enable();
-											Ext.getCmp('fld_lotqty').enable();
-											Ext.getCmp('fld_pcb').enable();
-											Ext.getCmp('fld_pwb').enable();
-											fld_store.loadPage(1);
+								}
+							},{ xtype				: 'combobox',
+								id					: 'cbx_model',
+								name				: 'cbx_model',
+								fieldLabel			: 'Model Name',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								queryMode			: 'local',
+								store				: fld_store,
+								displayField		: 'model_name',
+								valueField			: 'item_id',
+								listeners			: {
+									select	: function(combo, records, eOpts){
+										Ext.getCmp('fld_stserial').reset();
+										Ext.getCmp('fld_lotno').reset();
+										Ext.getCmp('fld_lotqty').reset();
+										Ext.getCmp('fld_pcb').reset();
+										Ext.getCmp('fld_pwb').reset();
+										//Ext.getCmp('fld_lotno').setValue(fld_store.getAt(0).data.prod_no);
+										Ext.getCmp('fld_model').setValue(records[0].get('model_name'));
+										Ext.getCmp('fld_stserial').setValue(records[0].get('start_serial'));
+										Ext.getCmp('fld_lotno').setValue(records[0].get('prod_no'));
+										Ext.getCmp('fld_lotqty').setValue(records[0].get('lot_size'));
+										Ext.getCmp('fld_pcb').setValue(records[0].get('pcb_name'));
+										Ext.getCmp('fld_pwb').setValue(records[0].get('pwb_no'));
+										Ext.getCmp('hid_proc').setValue(records[0].get('process'));
+										Ext.getCmp('fld_stserial').enable();
+										Ext.getCmp('fld_lotno').enable();
+										Ext.getCmp('fld_lotqty').enable();
+										Ext.getCmp('fld_pcb').enable();
+										Ext.getCmp('fld_pwb').enable();
+										fld_store.loadPage(1);
 
-											var x = Ext.getCmp('hid_proc').getValue();
-											var dm = Ext.getCmp('dm');
-											var dm1 = Ext.getCmp('dm1');
-											var dm2 = Ext.getCmp('dm2');
-											var cm = Ext.getCmp('cm');
-											switch (x) {
-												case 'DM' :
-													dm.setValue(true);
-													break;
-												case 'DM1' :
-													dm1.setValue(true);
-													break;
-												case 'DM2' :
-													dm2.setValue(true);
-													break;
-												case 'CM' :
-													cm.setValue(true);
-													break;
-											}
-										},
-										change	: function(){
-											Ext.getCmp('fld_model').setValue(this.getValue());
-											Ext.getCmp('fld_stserial').enable();
-											Ext.getCmp('fld_lotno').enable();
-											Ext.getCmp('fld_lotqty').enable();
-											Ext.getCmp('fld_pcb').enable();
-											Ext.getCmp('fld_pwb').enable();
+										var x = Ext.getCmp('hid_proc').getValue();
+										var dm = Ext.getCmp('dm');
+										var dm1 = Ext.getCmp('dm1');
+										var dm2 = Ext.getCmp('dm2');
+										var cm = Ext.getCmp('cm');
+										switch (x) {
+											case 'DM' :
+												dm.setValue(true);
+												break;
+											case 'DM1' :
+												dm1.setValue(true);
+												break;
+											case 'DM2' :
+												dm2.setValue(true);
+												break;
+											case 'CM' :
+												cm.setValue(true);
+												break;
 										}
 									},
-									listConfig		: {
-										getInnerTpl	: function() {
-											//return '<table style="border:1px solid #fff"><tr><th style="border:1px solid #999">Model</th><th style="border:1px solid #999">Prod. No</th></tr><tr><td style="border:1px solid #999">{model_name}</td><td style="border:1px solid #999">{prod_no}</td></tr></table>';
-											return '<div style="border:1px solid #fff"><b>{model_name} - </b>{prod_no}</div>';
-										}
+									change	: function(){
+										Ext.getCmp('fld_model').setValue(this.getValue());
+										Ext.getCmp('fld_stserial').enable();
+										Ext.getCmp('fld_lotno').enable();
+										Ext.getCmp('fld_lotqty').enable();
+										Ext.getCmp('fld_pcb').enable();
+										Ext.getCmp('fld_pwb').enable();
 									}
-								},{	xtype      			: 'radiogroup',
-									fieldLabel 			: 'Group',
-									id					: 'fld_group',
-									name				: 'fld_group',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									items				: [
-										{ boxLabel: '1', name: 'fld_group', inputValue: '1',checked: true, width: 50 },
-										{ boxLabel: '2', name: 'fld_group', inputValue: '2', width: 50 },
-										{ boxLabel: '3', name: 'fld_group', inputValue: '3', width: 50 }
-									]
-								},{	xtype				: 'radiogroup',
-									fieldLabel			: 'Shift',
-									id					: 'fld_shift',
-									name				: 'fld_shift',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									items				: [
-										{ boxLabel: 'A', name: 'fld_shift', inputValue: 'A', checked: true, width: 50 },
-										{ boxLabel: 'B', name: 'fld_shift', inputValue: 'B', width: 50 },
-										{ boxLabel: 'C', name: 'fld_shift', inputValue: 'C', width: 50 }
-									],
-								},{	xtype				: 'hiddenfield',
-									fieldLabel			: 'Model',
-									id					: 'fld_model',
-									name				: 'fld_model',
-								},{	xtype				: 'textfield',
-									fieldLabel			: 'Start Serial',
-									id					: 'fld_stserial',
-									name				: 'fld_stserial',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									disabled			: true
-								},{	xtype				: 'textfield',
-									fieldLabel			: 'Lot No',
-									id					: 'fld_lotno',
-									name				: 'fld_lotno',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									disabled			: true
-								},{	xtype				: 'textfield',
-									fieldLabel			: 'Lot Qty',
-									id					: 'fld_lotqty',
-									name				: 'fld_lotqty',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									disabled			: true
-								},{xtype				: 'textfield',
-									fieldLabel			: 'PCB Name',
-									id					: 'fld_pcb',
-									name				: 'fld_pcb',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									disabled			: true
-								},{	xtype				: 'textfield',
-									fieldLabel			: 'PWB No',
-									id					: 'fld_pwb',
-									name				: 'fld_pwb',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									disabled			: true
-								},{	xtype				: 'hiddenfield',
-									fieldLabel			: 'Process',
-									id					: 'hid_proc',
-									name				: 'hid_proc',
-								},{	xtype				: 'radiogroup',
-									fieldLabel			: 'Process',
-									id					: 'fld_proc',
-									name				: 'fld_proc',
-									afterLabelTextTpl	: required,
-									allowBlank			: false,
-									labelSeparator		: ' ',
-									columns				: 2,
-									items				: [
-										{ id: 'dm', 	boxLabel: 'DM', 	name: 'fld_proc', 	inputValue: 'DM', 		width: 100, checked: true},
-										{ id: 'dm1', 	boxLabel: 'DM 1', 	name: 'fld_proc', 	inputValue: 'DM 1', 	width: 50 	},
-										{ id: 'dm2', 	boxLabel: 'DM 2', 	name: 'fld_proc', 	inputValue: 'DM 2', 	width: 100 	},
-										{ id: 'cm',		boxLabel: 'CM', 	name: 'fld_proc', 	inputValue: 'CM', 		width: 50 	}
-									]
-								},{	xtype				: 'combobox',
-									fieldLabel			: 'AI',
-									id					: 'fld_ai',
-									name				: 'fld_ai',
-									//afterLabelTextTpl	: required,
-									//allowBlank		: false,
-									labelSeparator		: ' ',
-									queryMode			: 'local',
-									store				: cbx_ai,
-									displayField		: 'ainame',
-									valueField			: 'aino',
-									hidden				: true
-								}]
-							},{ xtype			: 'container',
-								width			: 350,
-								items			: [
-									//field LINE REJECTION
-									{ 	xtype			: 'fieldset',
-										title			: 'LINE REJECTION',
-										width			: 330,
-										defaultType		: 'textfield',
-										defaults		: {
-											padding: '10 0 10 0'
-										},
-										items			: [
-											{	xtype				: 'combobox',
-												fieldLabel			: 'Problem Code /<br>Symptom',
-												id					: 'fld_prcode',
-												name				: 'fld_prcode',
-												afterLabelTextTpl	: required,
-												allowBlank			: false,
-												labelSeparator		: ' ',
-												queryMode			: 'local',
-												store				: cbx_prcode,
-												displayField		: 'problemname',
-												valueField			: 'problemno',
-												editable			: false,
-												listConfig			: {
-													getInnerTpl	: function() {
-														return '<div style="border:1px solid #fff"><b>{problemno} - </b>{problemname}</div>';
-													}
-												}
-											},{ xtype				: 'textfield',
-												fieldLabel			: 'Location',
-												id					: 'fld_loc',
-												name				: 'fld_loc',
-												afterLabelTextTpl	: required,
-												allowBlank			: false,
-												labelSeparator		: ' '
-											},{ fieldLabel			: 'Magazine No',
-												id					: 'fld_mag',
-												name				: 'fld_mag',
-												maskRe				: /[0-9,.]/,
-												labelSeparator		: ' '
-											},{	xtype				: 'combobox',
-												fieldLabel			: 'NG Found',
-												id					: 'fld_ng',
-												name				: 'fld_ng',
-												afterLabelTextTpl	: required,
-												allowBlank			: false,
-												labelSeparator		: ' ',
-												queryMode			: 'local',
-												store				: cbx_ng,
-												displayField		: 'ngname',
-												valueField			: 'ngno',
-												editable			: false
-											},{ fieldLabel			: 'Board No.',
-												id					: 'fld_boardke',
-												name				: 'fld_boardke',
-												labelSeparator		: ' '
-											},{ fieldLabel			: 'Board NG QTY',
-												id					: 'fld_boardqty',
-												name				: 'fld_boardqty',
-												maskRe				: /[0-9,.]/,
-												afterLabelTextTpl	: required,
-												allowBlank			: false,
-												labelSeparator		: ' '
-											},{ fieldLabel			: 'Point NG QTY',
-												id					: 'fld_pointqty',
-												name				: 'fld_pointqty',
-												maskRe				: /[0-9,.]/,
-												afterLabelTextTpl	: required,
-												allowBlank			: false,
-												labelSeparator		: ' '
-											}
-										]
+								},
+								listConfig		: {
+									getInnerTpl	: function() {
+										//return '<table style="border:1px solid #fff"><tr><th style="border:1px solid #999">Model</th><th style="border:1px solid #999">Prod. No</th></tr><tr><td style="border:1px solid #999">{model_name}</td><td style="border:1px solid #999">{prod_no}</td></tr></table>';
+										return '<div style="border:1px solid #fff"><b>{model_name} - </b>{prod_no}</div>';
 									}
-									//---------------------------------------------//
+								}
+							},{	xtype      			: 'radiogroup',
+								fieldLabel 			: 'Group',
+								id					: 'fld_group',
+								name				: 'fld_group',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								items				: [
+									{ boxLabel: '1', name: 'fld_group', inputValue: '1',checked: true, width: 50 },
+									{ boxLabel: '2', name: 'fld_group', inputValue: '2', width: 50 },
+									{ boxLabel: '3', name: 'fld_group', inputValue: '3', width: 50 }
 								]
-							}
-						],
+							},{	xtype				: 'radiogroup',
+								fieldLabel			: 'Shift',
+								id					: 'fld_shift',
+								name				: 'fld_shift',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								items				: [
+									{ boxLabel: 'A', name: 'fld_shift', inputValue: 'A', checked: true, width: 50 },
+									{ boxLabel: 'B', name: 'fld_shift', inputValue: 'B', width: 50 },
+									{ boxLabel: 'C', name: 'fld_shift', inputValue: 'C', width: 50 }
+								],
+							},{	xtype				: 'hiddenfield',
+								fieldLabel			: 'Model',
+								id					: 'fld_model',
+								name				: 'fld_model',
+							},{	xtype				: 'textfield',
+								fieldLabel			: 'Start Serial',
+								id					: 'fld_stserial',
+								name				: 'fld_stserial',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								disabled			: true
+							},{	xtype				: 'textfield',
+								fieldLabel			: 'Lot No',
+								id					: 'fld_lotno',
+								name				: 'fld_lotno',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								disabled			: true
+							},{	xtype				: 'textfield',
+								fieldLabel			: 'Lot Qty',
+								id					: 'fld_lotqty',
+								name				: 'fld_lotqty',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								disabled			: true
+							},{xtype				: 'textfield',
+								fieldLabel			: 'PCB Name',
+								id					: 'fld_pcb',
+								name				: 'fld_pcb',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								disabled			: true
+							},{	xtype				: 'textfield',
+								fieldLabel			: 'PWB No',
+								id					: 'fld_pwb',
+								name				: 'fld_pwb',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								disabled			: true
+							},{	xtype				: 'hiddenfield',
+								fieldLabel			: 'Process',
+								id					: 'hid_proc',
+								name				: 'hid_proc',
+							},{	xtype				: 'radiogroup',
+								fieldLabel			: 'Process',
+								id					: 'fld_proc',
+								name				: 'fld_proc',
+								afterLabelTextTpl	: required,
+								allowBlank			: false,
+								labelSeparator		: ' ',
+								columns				: 2,
+								items				: [
+									{ id: 'dm', 	boxLabel: 'DM', 	name: 'fld_proc', 	inputValue: 'DM', 		width: 100, checked: true},
+									{ id: 'dm1', 	boxLabel: 'DM 1', 	name: 'fld_proc', 	inputValue: 'DM 1', 	width: 50 	},
+									{ id: 'dm2', 	boxLabel: 'DM 2', 	name: 'fld_proc', 	inputValue: 'DM 2', 	width: 100 	},
+									{ id: 'cm',		boxLabel: 'CM', 	name: 'fld_proc', 	inputValue: 'CM', 		width: 50 	}
+								]
+							},{	xtype				: 'combobox',
+								fieldLabel			: 'AI',
+								id					: 'fld_ai',
+								name				: 'fld_ai',
+								//afterLabelTextTpl	: required,
+								//allowBlank		: false,
+								labelSeparator		: ' ',
+								queryMode			: 'local',
+								store				: cbx_ai,
+								displayField		: 'ainame',
+								valueField			: 'aino',
+								hidden				: true
+							}]
+						},{ xtype			: 'container',
+							width			: 350,
+							items			: [
+								//field LINE REJECTION
+								{ 	xtype			: 'fieldset',
+									title			: 'LINE REJECTION',
+									width			: 330,
+									defaultType		: 'textfield',
+									defaults		: {
+										padding: '10 0 10 0'
+									},
+									items			: [
+										{	xtype				: 'combobox',
+											fieldLabel			: 'Problem Code /<br>Symptom',
+											id					: 'fld_prcode',
+											name				: 'fld_prcode',
+											afterLabelTextTpl	: required,
+											allowBlank			: false,
+											labelSeparator		: ' ',
+											queryMode			: 'local',
+											store				: cbx_prcode,
+											displayField		: 'problemname',
+											valueField			: 'problemno',
+											editable			: false,
+											listConfig			: {
+												getInnerTpl	: function() {
+													return '<div style="border:1px solid #fff"><b>{problemno} - </b>{problemname}</div>';
+												}
+											}
+										},{ xtype				: 'textfield',
+											fieldLabel			: 'Location',
+											id					: 'fld_loc',
+											name				: 'fld_loc',
+											afterLabelTextTpl	: required,
+											allowBlank			: false,
+											labelSeparator		: ' '
+										},{ fieldLabel			: 'Magazine No',
+											id					: 'fld_mag',
+											name				: 'fld_mag',
+											maskRe				: /[0-9,.]/,
+											labelSeparator		: ' '
+										},{	xtype				: 'combobox',
+											fieldLabel			: 'NG Found',
+											id					: 'fld_ng',
+											name				: 'fld_ng',
+											afterLabelTextTpl	: required,
+											allowBlank			: false,
+											labelSeparator		: ' ',
+											queryMode			: 'local',
+											store				: cbx_ng,
+											displayField		: 'ngname',
+											valueField			: 'ngno',
+											editable			: false
+										},{ fieldLabel			: 'Board No.',
+											id					: 'fld_boardke',
+											name				: 'fld_boardke',
+											labelSeparator		: ' '
+										},{ fieldLabel			: 'Board NG QTY',
+											id					: 'fld_boardqty',
+											name				: 'fld_boardqty',
+											maskRe				: /[0-9,.]/,
+											afterLabelTextTpl	: required,
+											allowBlank			: false,
+											labelSeparator		: ' '
+										},{ fieldLabel			: 'Point NG QTY',
+											id					: 'fld_pointqty',
+											name				: 'fld_pointqty',
+											maskRe				: /[0-9,.]/,
+											afterLabelTextTpl	: required,
+											allowBlank			: false,
+											labelSeparator		: ' '
+										}
+									]
+								}
+								//---------------------------------------------//
+							]
+						}],
 						buttons			: [
 							{ 	text		: 'New',
 								iconCls		: 'add',
