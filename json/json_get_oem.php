@@ -31,7 +31,7 @@
 	
 	for ($i = 0; !$rs->EOF; $i++) {
 		$return[$i]['inputid'] = $rs->fields['0'];
-		$return[$i]['ngloc'] = $rs->fields['1'];
+		$return[$i]['ngloc'] = trim($rs->fields['1']);
 		$return[$i]['symptom'] = $rs->fields['2'];
 		
 		$rs->MoveNext();

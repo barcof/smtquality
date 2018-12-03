@@ -99,9 +99,9 @@
 			extend	: 'Ext.data.Model',
 			fields	: ['ngno', 'ngname']
 		});
-		Ext.define('fld_store',{
+		Ext.define('get_field_oem',{
 			extend	: 'Ext.data.Model',
-			fields	: ['item_id', 'model_name', 'start_serial', 'prod_no', 'lot_size', 'pcb_name', 'pwb_no', 'process']
+			fields	: ['model_name', 'start_serial', 'prod_no', 'lot_size', 'pcb_name', 'pwb_no', 'process']
 		});
 		Ext.define('rejection_store',{
 			extend	: 'Ext.data.Model',
@@ -251,16 +251,40 @@
 				}
 			}
 		});
-		var fld_store = Ext.create('Ext.data.Store',{
-			model	: 'fld_store',
-			autoLoad: true,
+		var get_field_oem = Ext.create('Ext.data.Store',{
+			model	: 'get_field_oem',
+			autoLoad: false,
 			proxy	: {
 				type	: 'ajax',
-				url		: 'json/json_get_field.php',
+				url		: 'json/json_get_field_oem.php',
 				reader	: {
 					type			: 'json',
 					root			: 'rows',
 					totalProperty	: 'totalCount'
+				}
+			},
+			listeners: {
+				load: function(store, records) {
+					if (records != '') {
+						var model = store.getAt(0).get('model_name');
+						var stserial = store.getAt(0).get('start_serial');
+						var prodno = store.getAt(0).get('prod_no');
+						var lotsize = store.getAt(0).get('lot_size');
+						var pcbname = store.getAt(0).get('pcb_name');
+						var pwb_no = store.getAt(0).get('pwb_no');
+						var process = store.getAt(0).get('process');
+						Ext.getCmp('cbx_model').setValue(model);
+						Ext.getCmp('fld_model').setValue(model);
+						Ext.getCmp('fld_stserial').setValue(stserial);
+						Ext.getCmp('fld_lotno').setValue(prodno);
+						Ext.getCmp('fld_lotqty').setValue(lotsize);
+						Ext.getCmp('fld_pcb').setValue(pcbname);
+						Ext.getCmp('fld_pwb').setValue(pwb_no);
+						Ext.getCmp('fld_proc').setValue(process);
+						Ext.getCmp('hid_proc').setValue(process);
+					} else {
+						console.log(records);
+					}
 				}
 			}
 		});
@@ -527,9 +551,7 @@
 					
 				}
 			},
-			selModel: {
-				selType: 'cellmodel'
-			},
+			selModel: { selType: 'cellmodel' },
 			plugins: [cellEditing],
 			tbar	: [{xtype:'tbspacer',width:10},
 				{	xtype	: 'button',
@@ -560,7 +582,7 @@
 					iconCls	: 'input',
 					text	: 'Input Data',
 					scale	: 'medium',
-					// handler	: input
+					handler	: input
 				},
 				{ 	xtype	: 'button',
 					id		: 'btn_update',
@@ -596,7 +618,8 @@
 								var val = field.getValue();
 								var len = val.length;
 								if(len >= 24) {
-									rejection();									
+									rejection();
+									Ext.getCmp('fld_res').setValue(val);
 								} else {
 									Ext.MessageBox.alert('WARNING','<h1 style="color:red">PLEASE SCAN BOARD ID FIRST</h1>');
 								}
@@ -619,8 +642,7 @@
 					scale	: 'medium',
 					// handler	: search_serialno
 				},
-				{
-					xtype	: 'button',
+				{ 	xtype	: 'button',
 					id		: 'btn_download',
 					iconCls	: 'download',
 					text	: 'Download',
@@ -1099,6 +1121,381 @@
 				});
 			}
 			win_rejection.show();
+		}
+
+		//-----------------------------------------------------[-Input Quality-]
+		function input(){
+			var win_input;
+
+			if(!win_input) {
+				var form_input = Ext.create('Ext.form.Panel',{
+					layout			: {
+						type			: 'hbox',
+						align			: 'stretch'
+					},
+					border			: false,
+					bodyPadding		: 20,
+					bodyStyle		: 'background:url(img/banner.jpg) no-repeat top left',
+					fieldDefaults	: {
+						labelWidth		: 120,
+						labelStyle		: 'font-weight:bold',
+						msgTarget		: 'side',
+						width			: 300
+					},
+					defaults		: {
+						anchor			: '100%'
+					},
+					items			: [{
+						xtype: 'hiddenfield',
+						id: 'fld_inputstatus',
+						name: 'fld_inputstatus',
+						value: 1
+					},
+					{ 	xtype			: 'container',
+						defaultType		: 'textfield',
+						width			: 320,
+						//padding			: '0 10 0 0',
+						items			: [
+						{
+							xtype				: 'hiddenfield',
+							id					: 'userlevel',
+							name				: 'userlevel',
+							value				: <?=$_SESSION['iqrs_userlevel']?>
+						},
+						{	xtype				: 'datefield',
+							id					: 'fld_date',
+							name				: 'fld_date',
+							fieldLabel			: 'Date',
+							labelSeparator		: ' ',
+							hidden: true, // temporary hide
+							format				: 'Y-m-d',
+							listeners			: {
+								select	: function(){
+									Ext.getCmp('fld_mch').reset();
+									Ext.getCmp('fld_model').reset();
+								}
+							}
+						},
+						{ 	xtype: 'textfield',
+							id: 'fld_boardid',
+							name: 'fld_boardid',
+							fieldLabel: 'Board ID',
+							listeners: {
+								specialkey: function(field, e) {
+									if(e.getKey() == e.ENTER) {
+										var val = field.getValue();
+										var len = val.length;
+										if(len >= 24) {
+											get_field_oem.proxy.setExtraParam('fld_boardid',val);
+											get_field_oem.loadPage(0);
+											Ext.getCmp('fld_stserial').enable();
+											Ext.getCmp('fld_lotno').enable();
+											Ext.getCmp('fld_lotqty').enable();
+											Ext.getCmp('fld_pcb').enable();
+											Ext.getCmp('fld_pwb').enable();
+										} else {
+											Ext.MessageBox.alert('WARNING','<h1 style="color:red">PLEASE SCAN BOARD ID FIRST</h1>');
+										}
+										// console.log(len);
+									} else { return false; }
+								}
+							}
+						},
+						{	xtype				: 'combobox',
+							id					: 'fld_mch',
+							name				: 'fld_mch',
+							fieldLabel			: 'Machine Name',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							queryMode			: 'local',
+							store				: cbx_mch,
+							displayField		: 'mchname',
+							valueField			: 'mchno'
+						},
+						{ 	xtype				: 'textfield',
+							id					: 'cbx_model',
+							name				: 'cbx_model',
+							fieldLabel			: 'Model Name',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' '
+						},{	xtype      			: 'radiogroup',
+							fieldLabel 			: 'Group',
+							id					: 'fld_group',
+							name				: 'fld_group',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							items				: [
+								{ boxLabel: '1', name: 'fld_group', inputValue: '1',checked: true, width: 50 },
+								{ boxLabel: '2', name: 'fld_group', inputValue: '2', width: 50 },
+								{ boxLabel: '3', name: 'fld_group', inputValue: '3', width: 50 }
+							]
+						},{	xtype				: 'radiogroup',
+							fieldLabel			: 'Shift',
+							id					: 'fld_shift',
+							name				: 'fld_shift',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							items				: [
+								{ boxLabel: 'A', name: 'fld_shift', inputValue: 'A', checked: true, width: 50 },
+								{ boxLabel: 'B', name: 'fld_shift', inputValue: 'B', width: 50 },
+								{ boxLabel: 'C', name: 'fld_shift', inputValue: 'C', width: 50 }
+							],
+						},{	xtype				: 'hiddenfield',
+							fieldLabel			: 'Model',
+							id					: 'fld_model',
+							name				: 'fld_model',
+						},{	xtype				: 'textfield',
+							fieldLabel			: 'Start Serial',
+							id					: 'fld_stserial',
+							name				: 'fld_stserial',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							disabled			: true
+						},{	xtype				: 'textfield',
+							fieldLabel			: 'Lot No',
+							id					: 'fld_lotno',
+							name				: 'fld_lotno',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							disabled			: true
+						},{	xtype				: 'textfield',
+							fieldLabel			: 'Lot Qty',
+							id					: 'fld_lotqty',
+							name				: 'fld_lotqty',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							disabled			: true
+						},{xtype				: 'textfield',
+							fieldLabel			: 'PCB Name',
+							id					: 'fld_pcb',
+							name				: 'fld_pcb',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							disabled			: true
+						},{	xtype				: 'textfield',
+							fieldLabel			: 'PWB No',
+							id					: 'fld_pwb',
+							name				: 'fld_pwb',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							disabled			: true
+						},{	xtype				: 'hiddenfield',
+							fieldLabel			: 'Process',
+							id					: 'hid_proc',
+							name				: 'hid_proc',
+							listeners: {
+								change: function(field) {
+									var x = field.getValue();
+									var dm = Ext.getCmp('dm');
+									var dm1 = Ext.getCmp('dm1');
+									var dm2 = Ext.getCmp('dm2');
+									var cm = Ext.getCmp('cm');
+									switch (x) {
+										case 'DM' :
+											dm.setValue(true);
+											break;
+										case 'DM1' :
+											dm1.setValue(true);
+											break;
+										case 'DM2' :
+											dm2.setValue(true);
+											break;
+										case 'CM' :
+											cm.setValue(true);
+											break;
+									}
+								}
+							}
+						},{	xtype				: 'radiogroup',
+							fieldLabel			: 'Process',
+							id					: 'fld_proc',
+							name				: 'fld_proc',
+							afterLabelTextTpl	: required,
+							allowBlank			: false,
+							labelSeparator		: ' ',
+							columns				: 2,
+							items				: [
+								{ id: 'dm', 	boxLabel: 'DM', 	name: 'fld_proc', 	inputValue: 'DM', 		width: 100, checked: true},
+								{ id: 'dm1', 	boxLabel: 'DM 1', 	name: 'fld_proc', 	inputValue: 'DM 1', 	width: 50 	},
+								{ id: 'dm2', 	boxLabel: 'DM 2', 	name: 'fld_proc', 	inputValue: 'DM 2', 	width: 100 	},
+								{ id: 'cm',		boxLabel: 'CM', 	name: 'fld_proc', 	inputValue: 'CM', 		width: 50 	}
+							]
+						},{	xtype				: 'combobox',
+							fieldLabel			: 'AI',
+							id					: 'fld_ai',
+							name				: 'fld_ai',
+							//afterLabelTextTpl	: required,
+							//allowBlank		: false,
+							labelSeparator		: ' ',
+							queryMode			: 'local',
+							store				: cbx_ai,
+							displayField		: 'ainame',
+							valueField			: 'aino',
+							hidden				: true
+						}]
+					},{ xtype			: 'container',
+						width			: 350,
+						items			: [
+							//field LINE REJECTION
+							{ 	xtype			: 'fieldset',
+								title			: 'LINE REJECTION',
+								width			: 330,
+								defaultType		: 'textfield',
+								defaults		: {
+									padding: '10 0 10 0'
+								},
+								items			: [
+									{	xtype				: 'combobox',
+										fieldLabel			: 'Problem Code /<br>Symptom',
+										id					: 'fld_prcode',
+										name				: 'fld_prcode',
+										afterLabelTextTpl	: required,
+										allowBlank			: false,
+										labelSeparator		: ' ',
+										queryMode			: 'local',
+										store				: cbx_prcode,
+										displayField		: 'problemname',
+										valueField			: 'problemno',
+										editable			: false,
+										listConfig			: {
+											getInnerTpl	: function() {
+												return '<div style="border:1px solid #fff"><b>{problemno} - </b>{problemname}</div>';
+											}
+										}
+									},{ xtype				: 'textfield',
+										fieldLabel			: 'Location',
+										id					: 'fld_loc',
+										name				: 'fld_loc',
+										afterLabelTextTpl	: required,
+										allowBlank			: false,
+										labelSeparator		: ' '
+									},{ fieldLabel			: 'Magazine No',
+										id					: 'fld_mag',
+										name				: 'fld_mag',
+										maskRe				: /[0-9,.]/,
+										labelSeparator		: ' '
+									},{	xtype				: 'combobox',
+										fieldLabel			: 'NG Found',
+										id					: 'fld_ng',
+										name				: 'fld_ng',
+										afterLabelTextTpl	: required,
+										allowBlank			: false,
+										labelSeparator		: ' ',
+										queryMode			: 'local',
+										store				: cbx_ng,
+										displayField		: 'ngname',
+										valueField			: 'ngno',
+										editable			: false
+									},{ fieldLabel			: 'Board No.',
+										id					: 'fld_boardke',
+										name				: 'fld_boardke',
+										labelSeparator		: ' '
+									},{ fieldLabel			: 'Board NG QTY',
+										id					: 'fld_boardqty',
+										name				: 'fld_boardqty',
+										maskRe				: /[0-9,.]/,
+										afterLabelTextTpl	: required,
+										allowBlank			: false,
+										labelSeparator		: ' '
+									},{ fieldLabel			: 'Point NG QTY',
+										id					: 'fld_pointqty',
+										name				: 'fld_pointqty',
+										maskRe				: /[0-9,.]/,
+										afterLabelTextTpl	: required,
+										allowBlank			: false,
+										labelSeparator		: ' '
+									}
+								]
+							}
+							//---------------------------------------------//
+						]
+					}],
+					buttons			: [
+						{ 	text		: 'New',
+							iconCls		: 'add',
+							scale		: 'medium',
+							handler		: function() {
+								var form = this.up('form').getForm();
+								form.reset();
+							}
+						},
+						{ 	text		: 'Submit',
+							iconCls		: 'submit',
+							scale		: 'medium',
+							formBind	: true,
+							handler		: function() {
+								var form = this.up('form').getForm();
+								var popwindow = this.up('window');
+								if (form.isValid()) {
+									form.submit({
+										url		: 'resp/resp_input_prodctrl.php',
+										waitMsg	: 'sending data',
+										success	: function(form, action) {
+											Ext.Msg.show({
+												title		:'Success - Input Data',
+												icon		: Ext.Msg.SUCCESS,
+												msg			: action.result.msg,
+												buttons		: Ext.Msg.OK
+											});
+											data_store.loadPage(1);
+											Ext.getCmp('fld_prcode').reset();
+											Ext.getCmp('fld_loc').reset();
+											Ext.getCmp('fld_mag').reset();
+											Ext.getCmp('fld_ng').reset();
+											Ext.getCmp('fld_boardke').reset();
+											Ext.getCmp('fld_boardqty').reset();
+											Ext.getCmp('fld_pointqty').reset();
+											//popwindow.close();
+										},
+										failure	: function(form, action) {
+											Ext.Msg.show({
+												title		:'Failure - Input Data',
+												icon		: Ext.Msg.ERROR,
+												msg			: action.result.msg,
+												buttons		: Ext.Msg.OK
+											});
+										}
+									});
+								}
+							}
+						}
+					]
+				});
+				win_input = Ext.widget('window',{
+					title			: '<p style="color:#000">Form Input',
+					width			: 700,
+					minWidth		: 700,
+					height			: 450,
+					minHeight		: 450,
+					layout			: 'fit',
+					animateTarget	: 'btn_input',
+					items			: form_input,
+					bodyStyle		: 'background:#008080',
+					bodyBorder		: false,
+					autoScroll		: true,
+					modal			: false,
+					constrain		: true,
+					border			: false,
+					listeners		:{
+						activate:function(){
+							Ext.getCmp('btn_input').disable();
+						},
+						close:function(){
+							Ext.getCmp('btn_input').enable();
+						}
+					}
+				});
+			}
+			win_input.show();
 		}
 	});
 </script>
