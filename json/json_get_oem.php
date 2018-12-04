@@ -9,11 +9,7 @@
 
 	// if($boardid == '') {
 		/**	run query **/
-			$rs 			= $db->Execute("SELECT a.inputid, a.loc, c.problemname
-											FROM tb_inqual a 
-											LEFT JOIN tb_rejection b ON a.inputid = b.inputid
-											LEFT JOIN tb_prcode c ON a.smt = c.problemno
-											WHERE b.fld_result = '{$boardid}'");
+			$rs 			= $db->Execute("GetInputIDOEM '{$boardid}'");
 			$return 		= array();
 		//	-----***-----  //
 	// } else {

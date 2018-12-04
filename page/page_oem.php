@@ -574,6 +574,7 @@
 						cbx_pcb.loadPage(1);
 						cbx_ai.loadPage(1);
 						cbx_ng.loadPage(1);
+						rejection_store.proxy.setExtraParam('inputid', '');
 						rejection_store.loadPage(1);
 					}
 				},
@@ -963,7 +964,7 @@
 														buttons		: Ext.Msg.OK
 													});
 													form.reset();
-													rejection_store.loadPage(1);
+													rejection_store.loadPage(0);
 													data_store.loadPage(1);
 												},
 
@@ -1085,11 +1086,11 @@
 								items: [
 									{ xtype: 'button', text: 'Update', iconCls	: 'edit', scale: 'medium', iconAlign: 'left'/*, handler: update_rejection*/  }
 								],
-								listeners	: {
-									afterrender: function(cmp) {
-										cmp.getComponent("refresh").hide();
-									}
-								}
+								// listeners	: {
+								// 	afterrender: function(cmp) {
+								// 		cmp.getComponent("refresh").hide();
+								// 	}
+								// }
 							})
 						}]
 					}]
