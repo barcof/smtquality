@@ -363,6 +363,7 @@
 						var ngloc = store.getAt(0).get('ngloc');
 						var symptom = store.getAt(0).get('symptom');
 						Ext.getCmp('fld_inputid').setValue(inputid);
+						Ext.getCmp('cbx_inputid').setValue(inputid);
 						Ext.getCmp('label_ngloc').setValue(ngloc);
 						Ext.getCmp('label_symptom').setValue(symptom);
 					} else {
@@ -715,9 +716,9 @@
 		function rejection(){
 			var win_rejection;
 
-			var boardid = Ext.getCmp('oemfollowup').getValue();
-			get_partno.proxy.setExtraParam('boardid',boardid);
-			get_oem.proxy.setExtraParam('boardid',boardid);
+			var boardid = Ext.getCmp('oemfollowup').getValue(); // get board id
+			get_partno.proxy.setExtraParam('boardid',boardid); // set parameter to get partnumber based on boardid
+			get_oem.proxy.setExtraParam('boardid',boardid); // set parameter to get inputid, symptom & location
 			get_partno.loadPage(0);
 			get_oem.loadPage(0);
 
@@ -733,10 +734,6 @@
 					items: [{
 						title		: 'Input Product',
 						region		: 'north',
-						//height		: 290,
-						height		: 318,
-						minHeight	: 318,
-						frame		: false,
 						items		: [{
 							xtype		: 'form',
 							id			: 'form_rejection',
@@ -757,18 +754,41 @@
 							},
 							items		: [
 							{ 	xtype: 'container',
-								layout:	'vbox',		
-								// width: 430,
-								items: [
+								layout:	'vbox',
+								items: [{
+									xtype : 'combo',
+									id : 'cbx_inputid',
+									name : 'cbx_inputid',
+									fieldLabel : 'Input ID',
+									afterLabelTextTpl : required,
+									allowBlank : false,
+									labelSeparator : ' ',
+									margin : '5 10 5 10',
+									width: 360,
+									queryMode : 'local',
+									store : get_oem,
+									displayField : 'inputid',
+									valueField : 'inputid',
+									listeners: {
+										select: function(combo, records, eOpts) {
+											var boardid = this.getValue();
+											var symptom = records[0].get('symptom');
+											var nglocation = records[0].get('ngloc');
+											// Ext.MessageBox.alert('INFO',symptom);
+											Ext.getCmp('fld_inputid').setValue(boardid);
+											Ext.getCmp('label_symptom').setValue(symptom);
+											Ext.getCmp('label_ngloc').setValue(nglocation);
+										}
+									}
+								},
 								{	xtype			: 'textfield',
-									margin			: '5 10 5 10',
+									margin			: '0 10 5 10',
 									fieldLabel		: 'Symptom',
 									id				: 'label_symptom',
 									name			: 'label_symptom',
 									labelSeparator	: ' ',
 									readOnly		: true,
-									width			: 360,
-									// value			: symptom
+									width			: 360
 								},
 								{
 									xtype			: 'fieldset',
@@ -848,9 +868,9 @@
 							{	xtype: 'container',
 								layout:	'vbox',
 								// width: 430,
-								items: [
+								items: [{xtype:'tbspacer',height: 35},
 									{	xtype			: 'textfield',
-										margin			: '5 10 5 10',
+										margin			: '0 10 5 10',
 										fieldLabel		: 'NG Location',
 										id				: 'label_ngloc',
 										name			: 'label_ngloc',
@@ -985,19 +1005,13 @@
 						}]
 					},{
 						title		: 'Product',
-						collapsible	: false,
 						region		: 'center',
 						layout		: 'fit',
-						autoScroll	: true,
 						items		: [{
 							xtype		: 'grid',
-							// layout      : 'fit',
 							id			: 'grid_rejection',
 							name		: 'grid_rejection',
 							store		: rejection_store,
-							// height		: 218,
-							//height		: 460,
-							//width		: '100%',
 							columnLines	: true,
 							multiSelect	: true,
 							viewConfig	: {
@@ -1096,7 +1110,7 @@
 					}]
 				});
 
-				win_rejection = Ext.widget('window',{
+				win_rejection = Ext.create('Ext.window.Window',{
 					title			: '<p style="color:#000">Form Follow Up',
 					width			: 966,
 					minWidth		: 966,
@@ -1438,7 +1452,7 @@
 								var popwindow = this.up('window');
 								if (form.isValid()) {
 									form.submit({
-										url		: 'resp/resp_input_prodctrl.php',
+										url		: 'resp/resp_input_oem.php',
 										waitMsg	: 'sending data',
 										success	: function(form, action) {
 											Ext.Msg.show({

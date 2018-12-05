@@ -26,6 +26,7 @@
 	}
 	
 	$inputid	= $_REQUEST['fld_inputid'];
+	$cbxinputid = $_REQUEST['cbx_inputid'];
 	$partno		= $_REQUEST['fld_part'];
 	$selectqty	= $_REQUEST['fld_selectqty'];
 	$ngqty		= $_REQUEST['fld_repairqty'];
@@ -50,7 +51,7 @@
 			
 			$filename = null;
 			
-			$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+			$rs = $db->Execute("exec InsertRejection '{$cbxinputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
 					'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
 					
 			$rs->Close();
@@ -67,7 +68,7 @@
 				
 				if (move_uploaded_file($tmpfile, $dir.$file)){
 					
-					$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+					$rs = $db->Execute("exec InsertRejection '{$cbxinputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
 					'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
 					
 					$rs->Close();
@@ -87,29 +88,6 @@
 			}
 			
 		}
-		/*if(!in_array($ext,$allowed)) {
-			
-			$var_msg = 2;
-			
-		}else {
-			
-			$filename = $dir.$file;
-			
-			if (move_uploaded_file($tmpfile, $dir.$file)){
-				
-				$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
-				'{$filename}', '{$getdate}', '{$userip}'");
-				
-				$rs->Close();
-				
-				$var_msg = 1;
-				
-			} else {
-				
-				$var_msg = 3;
-				
-			}
-		}*/
 	}
 	catch (exception $e) {
 		$var_msg = $db->ErrorNo();
@@ -130,47 +108,20 @@
 				'success': true,
 				'msg': 'Successfully save data'
 			}";
-			break;
+		break;
 		case 2:
 			echo "{
-					'success': false,
-					'msg': 'Incorrect extention of file, must be (*.jpg, *.jpeg, *.png, *.gif)'
-				}";
-			break;
+				'success': false,
+				'msg': 'Incorrect extention of file, must be (*.jpg, *.jpeg, *.png, *.gif)'
+			}";
+		break;
 		case 3:
 			echo "{
-					'success': false,
-					'msg': 'Failed to upload file'
-				}";
-			break;
+				'success': false,
+				'msg': 'Failed to upload file'
+			}";
+		break;
 	}
 	$db->Close();
 	$db=null;
-	
-	/*
-	echo 'Model Number 		='.$model.'<br>';
-	echo 'Date				='.$date.'<br>';
-	echo 'Group				='.$group.'<br>';
-	echo 'Shift				='.$shift.'<br>';
-	echo 'Board				='.$board.'<br>';
-	echo 'Lot Number		='.$lotno.'<br>';
-	echo 'Lot Qty 			='.$lotqty.'<br>';
-	echo 'Pcb 				='.$pcb.'<br>';
-	echo 'Pwb 				='.$pwb.'<br>';
-	echo 'Process 			='.$proc.'<br>';
-	echo 'Ai				='.$ai.'<br>';
-	echo 'Problem Code 		='.$prcode.'<br>';
-	echo 'Location			='.$location.'<br>';
-	echo 'NG				='.$ng.'<br>';
-	echo 'Board ke			='.$boardke.'<br>';
-	echo 'Board NG Qty 		='.$boardqty.'<br>';
-	echo 'Point NG Qty 		='.$pointqty.'<br>';
-	echo 'SVI Status		='.$svi.'<br>';
-	echo 'Output			='.$output.'<br>';
-	echo 'Point 			='.$point.'<br>';
-	echo 'Total Point		='.$totpoint.'<br>';
-	echo 'Cleaning Board	='.$cleanboard.'<br>';
-	
-	echo "exec InsertInqual '{$date}','{$group}','{$shift}','{$board}','{$model}','{$lotno}','{$lotqty}','{$pcb}','{$pwb}','{$proc}','{$ai}','{$prcode}','{$location}','{$ng}','{$boardke}','{$boardqty}','{$pointqty}','{$svi}','{$output}','{$point}','{$totpoint}','{$cleanboard}','{$getdate}','{$userip}'";
-	*/
 ?>
