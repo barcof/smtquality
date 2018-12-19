@@ -603,6 +603,7 @@
 								{	xtype	: 'button',
 									id		: 'btn_refresh',
 									iconCls	: 'refresh',
+									iconAlign: 'top',
 									text 	: 'Refresh',
 									tooltip	: 'Refresh',
 									scale	: 'medium',
@@ -623,6 +624,7 @@
 								{	xtype	: 'button',
 									id		: 'btn_input',
 									iconCls	: 'input',
+									iconAlign: 'top',
 									text	: 'Input Data',
 									scale	: 'medium',
 									handler	: input
@@ -630,6 +632,7 @@
 								{ 	xtype	: 'button',
 									id		: 'btn_update',
 									iconCls	: 'update',
+									iconAlign: 'top',
 									text	: 'Update Data',
 									scale	: 'medium',
 									handler	: update
@@ -637,6 +640,7 @@
 								{ 	xtype	: 'button',
 									id		: 'btn_del',
 									iconCls	: 'delete',
+									iconAlign: 'top',
 									text	: 'Delete Data',
 									scale	: 'medium',
 									handler	: del
@@ -644,6 +648,7 @@
 								{	xtype	: 'button',
 									id		: 'btn_src',
 									iconCls	: 'search',
+									iconAlign: 'top',
 									text	: 'Search Data',
 									scale	: 'medium',
 									handler	: search
@@ -652,6 +657,7 @@
 								{ 	xtype	: 'button',
 									id		: 'btn_add_reject',
 									iconCls	: 'reject',
+									iconAlign: 'top',
 									text	: 'Follow Up',
 									scale	: 'medium',
 									handler	: rejection
@@ -659,6 +665,7 @@
 								{	xtype	: 'button',
 									id		: 'btn_input_serialno',
 									iconCls	: 'input',
+									iconAlign: 'top',
 									text	: 'Input Serial No',
 									scale	: 'medium',
 									handler	: input_serialno
@@ -666,6 +673,7 @@
 								{	xtype	: 'button',
 									id		: 'btn_src_serialno',
 									iconCls	: 'search',
+									iconAlign: 'top',
 									text	: 'Search Serial',
 									scale	: 'medium',
 									handler	: search_serialno
@@ -674,6 +682,7 @@
 									xtype	: 'button',
 									id		: 'btn_download',
 									iconCls	: 'download',
+									iconAlign: 'top',
 									text	: 'Download',
 									scale	: 'medium',
 									handler	: download
@@ -682,35 +691,31 @@
 								{	text  	: 'Settings',
 									id		: 'btn_settings',
 									iconCls	: 'setting',
+									iconAlign: 'top',
 									scale	: 'medium',
 									menu	: [
 										{	text	: 'Problem Code',
 											iconCls	: 'machine-16',
-											scale	: 'medium',
 											id		: 'btn_cp',
 											handler	: cp
 										},
 										{	text	: 'Machine Category',
 											iconCls	: 'machine-16',
-											scale	: 'medium',
 											id		: 'btn_mch',
 											handler	: mch
 										},
 										{	text	: 'PCB Category',
 											iconCls	: 'machine-16',
-											scale	: 'medium',
 											id		: 'btn_pcb',
 											handler	: pcb
 										},
 										{	text	: 'AI Category',
 											iconCls	: 'machine-16',
-											scale	: 'medium',
 											id		: 'btn_ai',
 											handler	: ai
 										},
 										{	text	: 'NG Category',
 											iconCls	: 'machine-16',
-											scale	: 'medium',
 											id		: 'btn_ng',
 											handler	: ng
 										}
@@ -772,7 +777,7 @@
 							labelWidth		: 120,
 							labelStyle		: 'font-weight:bold',
 							msgTarget		: 'side',
-							width			: 300
+							// width			: 300
 						},
 						defaults		: {
 							anchor			: '100%'
@@ -785,16 +790,16 @@
 						},
 						{ 	xtype			: 'container',
 							defaultType		: 'textfield',
-							width			: 320,
+							// width			: 320,
 							//padding			: '0 10 0 0',
 							items			: [
-							{
+							{	// USER LEVEL
 								xtype				: 'hiddenfield',
 								id					: 'userlevel',
 								name				: 'userlevel',
 								value				: <?=$_SESSION['iqrs_userlevel']?>
 							},
-							{	xtype				: 'datefield',
+							{	xtype				: 'datefield', //DATE
 								id					: 'fld_date',
 								name				: 'fld_date',
 								fieldLabel			: 'Date',
@@ -1014,12 +1019,12 @@
 								hidden				: true
 							}]
 						},{ xtype			: 'container',
-							width			: 350,
+							// width			: 350,
 							items			: [
 								//field LINE REJECTION
 								{ 	xtype			: 'fieldset',
 									title			: 'LINE REJECTION',
-									width			: 330,
+									anchor			: '100%',
 									defaultType		: 'textfield',
 									defaults		: {
 										padding: '10 0 10 0'
@@ -1066,24 +1071,6 @@
 											displayField		: 'ngname',
 											valueField			: 'ngno',
 											editable			: false
-										},{ fieldLabel			: 'Board No.',
-											id					: 'fld_boardke',
-											name				: 'fld_boardke',
-											labelSeparator		: ' '
-										},{ fieldLabel			: 'Board NG QTY',
-											id					: 'fld_boardqty',
-											name				: 'fld_boardqty',
-											maskRe				: /[0-9,.]/,
-											afterLabelTextTpl	: required,
-											allowBlank			: false,
-											labelSeparator		: ' '
-										},{ fieldLabel			: 'Point NG QTY',
-											id					: 'fld_pointqty',
-											name				: 'fld_pointqty',
-											maskRe				: /[0-9,.]/,
-											afterLabelTextTpl	: required,
-											allowBlank			: false,
-											labelSeparator		: ' '
 										}
 									]
 								}
@@ -1143,8 +1130,8 @@
 					});
 					win_input = Ext.widget('window',{
 						title			: '<p style="color:#000">Form Input',
-						width			: 700,
-						minWidth		: 700,
+						autoWidth		: '100%',
+						minWidth		: 635,
 						height			: 450,
 						minHeight		: 450,
 						layout			: 'fit',
@@ -2362,106 +2349,7 @@
 					win_del_ng.show();
 				}
 			}
-			/*
-			function search(){
-				var win_search;
-
-				if(!win_search) {
-					var form_search = Ext.create('Ext.form.Panel',{
-						layout			: {
-							type			: 'vbox',
-							align			: 'stretch'
-						},
-						border			: false,
-						bodyPadding		: 20,
-						bodyStyle		: 'background:url(img/banner.jpg) no-repeat top left',
-						fieldDefaults	: {
-							labelWidth		: 125,
-							labelStyle		: 'font-weight:bold',
-							msgTarget		: 'side'
-						},
-						defaults		: {
-							anchor			: '100%'
-						},
-						items			: [
-							{ 	xtype		: 'textfield',
-								id			: 'src_model',
-								name		: 'src_model',
-								fieldLabel	: 'Model Name',
-								//allowBlank	: false
-							},
-							{ 	xtype		: 'textfield',
-								id			: 'src_line',
-								name		: 'src_line',
-								fieldLabel	: 'Line',
-								//allowBlank	: false
-							},
-							{ 	xtype		: 'textfield',
-								id			: 'src_lotno',
-								name		: 'src_lotno',
-								fieldLabel	: 'Lot No'
-							}
-						],
-						buttons			: [
-							{
-								text		: 'Search',
-								iconCls		: 'search',
-								scale		: 'medium',
-								formBind	: true,
-								handler		: function() {
-									var form = this.up('form').getForm();
-									var popwindow = this.up('window');
-									if (form.isValid()) {
-										form.submit({
-											//url		: 'resp/resp_sendmailnew.php',
-											waitMsg	: 'sending data',
-											success	: function(form, action) {
-												data_store.loadPage(1);
-												popwindow.close();
-											},
-											failure	: function(form, action) {
-												Ext.Msg.show({
-													title		:'Failure - Send Notification',
-													icon		: Ext.Msg.ERROR,
-													msg			: action.result.msg,
-													buttons		: Ext.Msg.OK
-												});
-											}
-										});
-									}
-								}
-							}
-						]
-					});
-					win_search = Ext.widget('window',{
-						title			: '<p style="color:#000">Form Input',
-						width			: 400,
-						minWidth		: 400,
-						height			: 200,
-						minHeight		: 200,
-						modal			: false,
-						constrain		: true,
-						layout			: 'fit',
-						border			: false,
-						bodyBorder		: false,
-						animateTarget	: 'btn_src',
-						items			: form_search,
-						bodyStyle		: 'background:#008080',
-						listeners		:{
-							activate:function(){
-								Ext.getCmp('btn_input').disable();
-								Ext.getCmp('btn_src').disable();
-							},
-							close:function(){
-								Ext.getCmp('btn_input').enable();
-								Ext.getCmp('btn_src').enable();
-							}
-						}
-					});
-				}
-				win_search.show();
-			}
-			*/
+			
 			function cp(){
 				var win_cp;
 
@@ -3729,44 +3617,9 @@
 								labelSeparator		: ' ',
 								maskRe				: /[0-9]/
 							},
-							// {
-							// 	xtype				: 'textfield',
-							// 	fieldLabel			: 'Lot No',
-							// 	id					: 'src_lotno',
-							// 	name				: 'src_lotno',
-							// 	afterLabelTextTpl	: required,
-							// 	allowBlank			: false,
-							// 	labelSeparator		: ' '
-							// },{
-							// 	xtype				: 'textfield',
-							// 	fieldLabel			: 'PCB Name',
-							// 	id					: 'src_pcbname',
-							// 	name				: 'src_pcbname',
-							// 	afterLabelTextTpl	: required,
-							// 	allowBlank			: false,
-							// 	labelSeparator		: ' ',
-							// },{
-							// 	xtype				: 'textfield',
-							// 	fieldLabel			: 'PWB No',
-							// 	id					: 'src_pwbno',
-							// 	name				: 'src_pwbno',
-							// 	afterLabelTextTpl	: required,
-							// 	allowBlank			: false,
-							// 	labelSeparator		: ' '
-							// },{
-							// 	xtype				: 'textfield',
-							// 	fieldLabel			: 'Process',
-							// 	id					: 'src_proc',
-							// 	name				: 'src_proc',
-							// 	afterLabelTextTpl	: required,
-							// 	allowBlank			: false,
-							// 	labelSeparator		: ' '
-							// },
 							{
 								xtype		: 'button',
 								text		: 'Search',
-								iconCls		: 'search',
-								iconAlign	: 'top',
 								id			: 'search',
 								name		: 'search',
 								scale		: 'medium',
@@ -3784,8 +3637,7 @@
 						title			: '<p style="color:#000">Search Data',
 						width			: 350,
 						minWidth		: 350,
-						// height			: 310,
-						// minHeight		: 310,
+						minHeight		: 185,
 						layout			: 'fit',
 						animateTarget	: 'btn_src',
 						items			: form_search,
@@ -3856,8 +3708,6 @@
 							},{
 								xtype		: 'button',
 								text		: 'Search',
-								iconCls		: 'search',
-								iconAlign	: 'top',
 								id			: 'search_boardid',
 								name		: 'search_boardid',
 								scale		: 'medium',
@@ -3874,8 +3724,7 @@
 						title			: '<p style="color:#000">Search Data',
 						width			: 350,
 						minWidth		: 350,
-						height			: 150,
-						minHeight		: 150,
+						minHeight		: 130,
 						layout			: 'fit',
 						animateTarget	: 'btn_src_serialno',
 						items			: form_search_serialno,
