@@ -115,6 +115,10 @@
 			extend	: 'Ext.data.Model',
 			fields 	: ['inputid','ngloc','symptom']
 		});
+		Ext.define('get_partaddress',{
+			extend: 'Ext.data.Model',
+			fields: ['partno','partaddress']
+		});
 
 		var prcode_store = Ext.create('Ext.data.Store',{
 			model	: 'prcode_store',
@@ -339,6 +343,7 @@
 					if (records != '') {
 						var partno = store.getAt(0).get('partno');
 						Ext.getCmp('fld_part_oem').setValue(partno);
+						Ext.getCmp('fld_partno').setValue(partno);
 					} else {
 						console.log(records);
 					}
@@ -368,6 +373,32 @@
 						Ext.getCmp('label_symptom').setValue(symptom);
 					} else {
 						console.log(records);
+					}
+				}
+			}
+		});
+		var get_partaddress = Ext.create('Ext.data.Store',{
+			model : 'get_partaddress',
+			// autoLoad: true,
+			proxy : {
+				type: 'ajax',
+				url: 'json/json_get_partaddress.php',
+				reader: {
+					type : 'json',
+					root : 'rows'
+				}
+			},
+			listeners: {
+				load: function(store, records) {
+					// console.log(records.value);
+					if(records != '') {
+						var partno = store.getAt(0).get('partno');
+						var partaddress = store.getAt(0).get('partaddress');
+						Ext.getCmp('label_partno').setText(partno);
+						Ext.getCmp('fld_address').setValue(partaddress);
+					} else {
+						Ext.getCmp('label_partno').setText('Part Tidak Ada');
+						Ext.getCmp('fld_address').setValue(null);
 					}
 				}
 			}
@@ -558,6 +589,7 @@
 				{	xtype	: 'button',
 					id		: 'btn_refresh',
 					iconCls	: 'refresh',
+					iconAlign: 'top',
 					text 	: 'Refresh',
 					tooltip	: 'Refresh',
 					scale	: 'medium',
@@ -582,6 +614,7 @@
 				{	xtype	: 'button',
 					id		: 'btn_input',
 					iconCls	: 'input',
+					iconAlign: 'top',
 					text	: 'Input Data',
 					scale	: 'medium',
 					handler	: input
@@ -589,6 +622,7 @@
 				{ 	xtype	: 'button',
 					id		: 'btn_update',
 					iconCls	: 'update',
+					iconAlign: 'top',
 					text	: 'Update Data',
 					scale	: 'medium',
 					// handler	: update
@@ -596,6 +630,7 @@
 				{ 	xtype	: 'button',
 					id		: 'btn_del',
 					iconCls	: 'delete',
+					iconAlign: 'top',
 					text	: 'Delete Data',
 					scale	: 'medium',
 					// handler	: del
@@ -603,10 +638,35 @@
 				{	xtype	: 'button',
 					id		: 'btn_src',
 					iconCls	: 'search',
+					iconAlign: 'top',
 					text	: 'Search Data',
 					scale	: 'medium',
 					// handler	: search
 					//hidden	: true // remove this to show search button
+				},
+				{	xtype	: 'button',
+					id		: 'btn_input_serialno',
+					iconCls	: 'input',
+					iconAlign: 'top',
+					text	: 'Input Serial No',
+					scale	: 'medium',
+					// handler	: input_serialno
+				},
+				{	xtype	: 'button',
+					id		: 'btn_src_serialno',
+					iconCls	: 'search',
+					iconAlign: 'top',
+					text	: 'Search Serial',
+					scale	: 'medium',
+					// handler	: search_serialno
+				},
+				{ 	xtype	: 'button',
+					id		: 'btn_download',
+					iconCls	: 'download',
+					iconAlign: 'top',
+					text	: 'Download',
+					scale	: 'medium',
+					// handler	: download
 				},
 				{ 	xtype: 'textfield',
 					id: 'oemfollowup',
@@ -630,60 +690,35 @@
 						}
 					}
 				},
-				{	xtype	: 'button',
-					id		: 'btn_input_serialno',
-					iconCls	: 'input',
-					text	: 'Input Serial No',
-					scale	: 'medium',
-					// handler	: input_serialno
-				},
-				{	xtype	: 'button',
-					id		: 'btn_src_serialno',
-					iconCls	: 'search',
-					text	: 'Search Serial',
-					scale	: 'medium',
-					// handler	: search_serialno
-				},
-				{ 	xtype	: 'button',
-					id		: 'btn_download',
-					iconCls	: 'download',
-					text	: 'Download',
-					scale	: 'medium',
-					// handler	: download
-				},
 				'->',
 				{	text  	: 'Settings',
 					id		: 'btn_settings',
 					iconCls	: 'setting',
+					iconAlign: 'top',
 					scale	: 'medium',
 					menu	: [
 						{	text	: 'Problem Code',
 							iconCls	: 'machine-16',
-							scale	: 'medium',
 							id		: 'btn_cp',
 							// handler	: cp
 						},
 						{	text	: 'Machine Category',
 							iconCls	: 'machine-16',
-							scale	: 'medium',
 							id		: 'btn_mch',
 							// handler	: mch
 						},
 						{	text	: 'PCB Category',
 							iconCls	: 'machine-16',
-							scale	: 'medium',
 							id		: 'btn_pcb',
 							// handler	: pcb
 						},
 						{	text	: 'AI Category',
 							iconCls	: 'machine-16',
-							scale	: 'medium',
 							id		: 'btn_ai',
 							// handler	: ai
 						},
 						{	text	: 'NG Category',
 							iconCls	: 'machine-16',
-							scale	: 'medium',
 							id		: 'btn_ng',
 							// handler	: ng
 						}
@@ -699,12 +734,12 @@
 				clock,
 				{xtype:'tbspacer',width:10}
 			],
-			bbar		: Ext.create('Ext.PagingToolbar', {
-				pageSize	: itemperpage,
-				store		: data_store,
-				displayInfo	: true,
-				plugins		: Ext.create('Ext.ux.ProgressBarPager', {}),
-				listeners	: {
+			bbar: Ext.create('Ext.PagingToolbar', {
+				pageSize: itemperpage,
+				store: data_store,
+				displayInfo: true,
+				plugins: Ext.create('Ext.ux.ProgressBarPager', {}),
+				listeners: {
 					afterrender: function(cmp) {
 						cmp.getComponent("refresh").hide();
 					}
@@ -821,16 +856,6 @@
 												field.setValue(field.getValue().toUpperCase());
 											}
 										}
-									},{ fieldLabel			: 'Qty Select',
-										id					: 'fld_selectqty',
-										name				: 'fld_selectqty',
-									   	maskRe				: /[0-9.,]/,
-										labelSeparator		: ' '
-									},{ fieldLabel			: 'Qty NG',
-										id					: 'fld_repairqty',
-										name				: 'fld_repairqty',
-									   	maskRe				: /[0-9.,]/,
-										labelSeparator		: ' '
 									},{ fieldLabel			: 'Repaired By',
 										id					: 'fld_repby',
 										name				: 'fld_repby',
@@ -1155,11 +1180,11 @@
 						labelWidth		: 120,
 						labelStyle		: 'font-weight:bold',
 						msgTarget		: 'side',
-						width			: 300
+						// width			: 300
 					},
-					defaults		: {
-						anchor			: '100%'
-					},
+					// defaults		: {
+					// 	anchor			: '100%'
+					// },
 					items			: [{
 						xtype: 'hiddenfield',
 						id: 'fld_inputstatus',
@@ -1190,11 +1215,23 @@
 									Ext.getCmp('fld_model').reset();
 								}
 							}
+						},{
+							xtype: 'textfield',
+							id: 'fld_nik',
+							name: 'fld_nik',
+							fieldLabel: 'PIC Input',
+							afterLabelTextTpl: required,
+							allowBlank: false,
+							labelSeparator: ' ',
+							emptyText: 'SCAN NIK HERE . . .'
 						},
 						{ 	xtype: 'textfield',
 							id: 'fld_boardid',
 							name: 'fld_boardid',
 							fieldLabel: 'Board ID',
+							afterLabelTextTpl: required,
+							allowBlank: false,
+							labelSeparator: ' ',
 							listeners: {
 								specialkey: function(field, e) {
 									if(e.getKey() == e.ENTER) {
@@ -1358,81 +1395,135 @@
 							hidden				: true
 						}]
 					},{ xtype			: 'container',
-						width			: 350,
+						// width			: 350,
 						items			: [
-							//field LINE REJECTION
-							{ 	xtype			: 'fieldset',
-								title			: 'LINE REJECTION',
-								width			: 330,
-								defaultType		: 'textfield',
-								defaults		: {
-									padding: '10 0 10 0'
-								},
-								items			: [
-									{	xtype				: 'combobox',
-										fieldLabel			: 'Problem Code /<br>Symptom',
-										id					: 'fld_prcode',
-										name				: 'fld_prcode',
-										afterLabelTextTpl	: required,
-										allowBlank			: false,
-										labelSeparator		: ' ',
-										queryMode			: 'local',
-										store				: cbx_prcode,
-										displayField		: 'problemname',
-										valueField			: 'problemno',
-										editable			: false,
-										listConfig			: {
-											getInnerTpl	: function() {
-												return '<div style="border:1px solid #fff"><b>{problemno} - </b>{problemname}</div>';
+						//field LINE REJECTION
+						{ 	xtype			: 'fieldset',
+							title			: 'LINE REJECTION',
+							anchor			: '100%',
+							defaultType		: 'textfield',
+							defaults		: {
+								padding: '10 0 10 0'
+							},
+							items			: [
+								{	xtype				: 'combobox',
+									fieldLabel			: 'Problem Code /<br>Symptom',
+									id					: 'fld_prcode',
+									name				: 'fld_prcode',
+									afterLabelTextTpl	: required,
+									allowBlank			: false,
+									labelSeparator		: ' ',
+									queryMode			: 'local',
+									store				: cbx_prcode,
+									displayField		: 'problemname',
+									valueField			: 'problemno',
+									editable			: false,
+									listConfig			: {
+										getInnerTpl	: function() {
+											return '<div style="border:1px solid #fff"><b>{problemno} - </b>{problemname}</div>';
+										}
+									}
+								},{ xtype				: 'textfield',
+									fieldLabel			: 'Location',
+									id					: 'fld_loc',
+									name				: 'fld_loc',
+									afterLabelTextTpl	: required,
+									allowBlank			: false,
+									labelSeparator		: ' ',
+									listeners: {
+										blur: function() {
+											var model = Ext.getCmp('cbx_model').getValue();
+											var pcb_name = Ext.getCmp('fld_pcb').getValue();
+											get_partaddress.proxy.setExtraParam('model_name',model);
+											get_partaddress.proxy.setExtraParam('pcb_name',pcb_name);
+											get_partaddress.proxy.setExtraParam('location',this.getValue());
+											get_partaddress.loadPage(0);
+										}
+									}
+								},{ xtype: 'fieldcontainer',
+									fieldLabel: 'Part Number',
+									id: 'container_partno',
+									name: 'container_partno',
+									afterLabelTextTpl: required,
+									labelSeparator: ' ',
+									layout: 'vbox',
+									anchor: '100%',
+									items: [{
+										xtype: 'textfield',
+										id: 'fld_partno',
+										name: 'fld_partno',
+										allowBlank: false,
+										listeners: {
+											specialkey: function(field, e) {
+												if(e.getKey() == e.ENTER) {
+													// console.log(get_partaddress.getAt(0).get('partno'));
+													// console.log(get_partaddress.getAt(0));
+													var checkitem = get_partaddress.getAt(0);
+													console.log(checkitem);
+													// Ext.MessageBox.alert('INFO',get_partaddress.getAt(0));
+													if (checkitem == null){
+														var audio = document.getElementById('nopart');
+														audio.autoplay = true;
+														audio.load();
+														Ext.Msg.show({
+															title:'WARNING MESSAGE',
+															msg: '<h1 style="color:#e53935;padding-top:5px;font-size:40px">PART TIDAK ADA !!!</h1>',
+															buttons: Ext.Msg.OK,
+															icon: Ext.Msg.ERROR
+														});
+													} else {
+														var partnumber = checkitem.get('partno');
+														if(partnumber != field) {
+															var audio = document.getElementById('wrongpart');
+															audio.autoplay = true;
+															audio.load();
+															Ext.Msg.show({
+																title:'WARNING MESSAGE',
+																msg: '<h1 style="color:#e53935;padding-top:5px;font-size:40px">PART TIDAK SAMA !!!</h1>',
+																buttons: Ext.Msg.OK,
+																icon: Ext.Msg.ERROR
+															});
+														} else {
+															Ext.MessageBox.alert('INFO',field.getValue());
+														}
+													}
+												}
 											}
 										}
-									},{ xtype				: 'textfield',
-										fieldLabel			: 'Location',
-										id					: 'fld_loc',
-										name				: 'fld_loc',
-										afterLabelTextTpl	: required,
-										allowBlank			: false,
-										labelSeparator		: ' '
-									},{ fieldLabel			: 'Magazine No',
-										id					: 'fld_mag',
-										name				: 'fld_mag',
-										maskRe				: /[0-9,.]/,
-										labelSeparator		: ' '
-									},{	xtype				: 'combobox',
-										fieldLabel			: 'NG Found',
-										id					: 'fld_ng',
-										name				: 'fld_ng',
-										afterLabelTextTpl	: required,
-										allowBlank			: false,
-										labelSeparator		: ' ',
-										queryMode			: 'local',
-										store				: cbx_ng,
-										displayField		: 'ngname',
-										valueField			: 'ngno',
-										editable			: false
-									},{ fieldLabel			: 'Board No.',
-										id					: 'fld_boardke',
-										name				: 'fld_boardke',
-										labelSeparator		: ' '
-									},{ fieldLabel			: 'Board NG QTY',
-										id					: 'fld_boardqty',
-										name				: 'fld_boardqty',
-										maskRe				: /[0-9,.]/,
-										afterLabelTextTpl	: required,
-										allowBlank			: false,
-										labelSeparator		: ' '
-									},{ fieldLabel			: 'Point NG QTY',
-										id					: 'fld_pointqty',
-										name				: 'fld_pointqty',
-										maskRe				: /[0-9,.]/,
-										afterLabelTextTpl	: required,
-										allowBlank			: false,
-										labelSeparator		: ' '
-									}
-								]
-							}
-							//---------------------------------------------//
-						]
+									},{
+										xtype: 'label',
+										margin: '5 0 0 0',
+										id: 'label_partno',
+										name: 'label_partno'
+									}]
+								},{
+									xtype: 'textfield',
+									fieldLabel: 'Address Part',
+									id: 'fld_address',
+									name: 'fld_address',
+									afterLabelTextTpl: required,
+									allowBlank: false,
+									labelSeparator: ' '
+								},{ fieldLabel			: 'Magazine No',
+									id					: 'fld_mag',
+									name				: 'fld_mag',
+									maskRe				: /[0-9,.]/,
+									labelSeparator		: ' '
+								},{	xtype				: 'combobox',
+									fieldLabel			: 'Detection',
+									id					: 'fld_ng',
+									name				: 'fld_ng',
+									afterLabelTextTpl	: required,
+									allowBlank			: false,
+									labelSeparator		: ' ',
+									queryMode			: 'local',
+									store				: cbx_ng,
+									displayField		: 'ngname',
+									valueField			: 'ngno',
+									editable			: false
+								}
+							]
+						}]
 					}],
 					buttons			: [
 						{ 	text		: 'New',
@@ -1441,6 +1532,7 @@
 							handler		: function() {
 								var form = this.up('form').getForm();
 								form.reset();
+								Ext.getCmp('label_partno').setText('');
 							}
 						},
 						{ 	text		: 'Submit',
@@ -1487,8 +1579,7 @@
 				});
 				win_input = Ext.widget('window',{
 					title			: '<p style="color:#000">Form Input',
-					width			: 700,
-					minWidth		: 700,
+					minWidth		: 670,
 					height			: 450,
 					minHeight		: 450,
 					layout			: 'fit',

@@ -45,6 +45,8 @@
 				?>
 				<section>
 					<div class="wrapper">
+						<audio id="nopart" controls="controls" hidden="hidden"><source src="sound/PART_TIDAK_ADA.mp3" type="audio/mp3"></audio>
+						<audio id="wrongpart" controls="controls" hidden="hidden"><source src="sound/Part_Tidak_Sama.mp3" type="audio/mp3"></audio>
 						<div id="section">
 							
 						</div>

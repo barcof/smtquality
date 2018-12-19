@@ -46,6 +46,7 @@
 	$inputstatus = isset($_REQUEST['fld_inputstatus']) ? $_REQUEST['fld_inputstatus'] : 0;
 	$boardid = isset($_REQUEST['fld_boardid']) ? $_REQUEST['fld_boardid'] : "";
 	$getdate = date('Y-m-d H:i:s');
+	$scannink = $_REQUEST['fld_nik'];
 
 	if ($date == '') {
 		$date = date('Y-m-d');
@@ -57,7 +58,8 @@
 	try {
 		$rs = $db->Execute("exec InsertOEM '{$date}','{$group}','{$shift}','{$board}','{$model}','{$st_serial}',
 					'','{$lotno}','{$lotqty}','{$pcb}','{$pwb}','{$proc}','{$prcode}','{$location}','{$magazineno}',
-					'{$ng}','{$boardke}','{$boardqty}','{$pointqty}','{$getdate}','{$userip}','{$levelid}',{$inputstatus},'{$boardid}'");
+					'{$ng}','{$boardke}','{$boardqty}','{$pointqty}','{$getdate}','{$userip}','{$levelid}',
+					{$inputstatus},'{$boardid}','{$scannik}'");
 
 		$rs->Close();
 		
