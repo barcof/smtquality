@@ -1,6 +1,7 @@
 <?php
 	include 'adodb/adodb.inc.php';
 	include 'adodb/adodb-exceptions.inc.php';
+	include 'adodb/adodb-errorpear.inc.php';
 	
 	
 	$dbasetype = 'odbc_mssql';

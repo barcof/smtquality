@@ -39,9 +39,9 @@
 	$location = $_REQUEST['fld_loc'];
 	$magazineno	= $_REQUEST['fld_mag'];
 	$ng = $_REQUEST['fld_ng'];
-	$boardke = $_REQUEST['fld_boardke'];
-	$boardqty = $_REQUEST['fld_boardqty'];
-	$pointqty = $_REQUEST['fld_pointqty'];
+	$boardke = isset($_REQUEST['fld_boardke']) ? $_REQUEST['fld_boardke'] : '';
+	$boardqty = isset($_REQUEST['fld_boardqty']) ? $_REQUEST['fld_boardqty'] : 0;
+	$pointqty = isset($_REQUEST['fld_pointqty']) ? $_REQUEST['fld_pointqty'] : 0;
 	$levelid = $_REQUEST['userlevel'];
 	$inputstatus = isset($_REQUEST['fld_inputstatus']) ? $_REQUEST['fld_inputstatus'] : 0;
 	$getdate = date('Y-m-d H:i:s');

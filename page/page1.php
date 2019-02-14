@@ -1109,9 +1109,6 @@
 												Ext.getCmp('fld_loc').reset();
 												Ext.getCmp('fld_mag').reset();
 												Ext.getCmp('fld_ng').reset();
-												Ext.getCmp('fld_boardke').reset();
-												Ext.getCmp('fld_boardqty').reset();
-												Ext.getCmp('fld_pointqty').reset();
 												//popwindow.close();
 											},
 											failure	: function(form, action) {
@@ -3151,7 +3148,7 @@
 														url				: 'resp/resp_input_rejection.php',
 														waitMsg			: 'sending data',
 														submitEmptyText	: false,
-
+														params: 'inputcode='+0,
 														success	: function(form, action) {
 															Ext.Msg.show({
 																title		:'Success - Input Data',

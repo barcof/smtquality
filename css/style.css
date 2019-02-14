@@ -5,12 +5,13 @@
   src: url('../../font/Ubuntu-Regular.ttf');
 }
 *{
-    padding:0;
-    margin:0;
+    /*padding:0;
+    margin:0;*/
+    text-decoration: none;
     font-family: 'Ubuntu', sans-serif;
 	outline: none !important;
-    _font-size: 14px;
-    _color: firebrick;
+    /*font-size: 14px;*/
+    /*color: firebrick;*/
 }
 body{
     _background: WhiteSmoke;
@@ -112,4 +113,16 @@ nav li a:hover{
 }
 .x-header-text{
 	padding: 0 !important;
+}
+/*.forbidden .x-grid-cell { 
+    background-color: #e53935;
+}*/
+.forbidden .x-grid-cell { 
+    background-color: rgba(213, 0, 0, 0.65) !important;
+    color: black !important;
+    font-weight: bold;
+}
+.error-msg {
+    color:#b71c1c;
+    line-height:normal;
 }

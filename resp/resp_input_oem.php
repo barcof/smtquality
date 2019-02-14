@@ -24,31 +24,31 @@
         $userip = 'UNKNOWN';
 	}
 
-	$model = $_REQUEST['fld_model'];
+	$model = isset($_REQUEST['fld_model']) ? $_REQUEST['fld_model'] : NULL;
 	$date = $_REQUEST['fld_date'];
 	$group = $_REQUEST['fld_group'];
 	$shift = $_REQUEST['fld_shift'];
 	$board = $_REQUEST['fld_mch'];
 	$st_serial = $_REQUEST['fld_stserial'];
 	$lotno = $_REQUEST['fld_lotno'];
-	$lotqty	= $_REQUEST['fld_lotqty'];
-	$pcb = $_REQUEST['fld_pcb'];
-	$pwb = $_REQUEST['fld_pwb'];
-	$proc = $_REQUEST['fld_proc'];
+	$lotqty	= isset($_REQUEST['fld_lotqty']) ? $_REQUEST['fld_lotqty'] : NULL;
+	$pcb = isset($_REQUEST['fld_pcb']) ? $_REQUEST['fld_pcb'] : NULL;
+	$pwb = isset($_REQUEST['fld_pwb']) ? $_REQUEST['fld_pwb'] : NULL;
+	$proc = isset($_REQUEST['fld_proc']) ? $_REQUEST['fld_proc'] : NULL;
 	$prcode	= $_REQUEST['fld_prcode'];
-	$location = $_REQUEST['fld_loc'];
+	$location = isset($_REQUEST['fld_loc']) ? $_REQUEST['fld_loc'] : NULL;
 	$magazineno	= $_REQUEST['fld_mag'];
 	$ng = $_REQUEST['fld_ng'];
-	$boardke = $_REQUEST['fld_boardke'];
-	$boardqty = $_REQUEST['fld_boardqty'];
-	$pointqty = $_REQUEST['fld_pointqty'];
 	$levelid = $_REQUEST['userlevel'];
 	$inputstatus = isset($_REQUEST['fld_inputstatus']) ? $_REQUEST['fld_inputstatus'] : 0;
-	$boardid = isset($_REQUEST['fld_boardid']) ? $_REQUEST['fld_boardid'] : "";
+	$boardid = isset($_REQUEST['fld_boardid']) ? $_REQUEST['fld_boardid'] : NULL;
 	$getdate = date('Y-m-d H:i:s');
-	$scannink = $_REQUEST['fld_nik'];
+	$scannik = $_REQUEST['fld_nik'];
+	$partno = isset($_REQUEST['fld_partno']) ? $_REQUEST['fld_partno'] : NULL;
+	$partaddress = isset($_REQUEST['fld_address']) ? $_REQUEST['fld_address'] : NULL;
 
 	if ($date == '') {
+		// set default date to date now
 		$date = date('Y-m-d');
 	} else {
 		$date = $_REQUEST['fld_date'];
@@ -58,8 +58,7 @@
 	try {
 		$rs = $db->Execute("exec InsertOEM '{$date}','{$group}','{$shift}','{$board}','{$model}','{$st_serial}',
 					'','{$lotno}','{$lotqty}','{$pcb}','{$pwb}','{$proc}','{$prcode}','{$location}','{$magazineno}',
-					'{$ng}','{$boardke}','{$boardqty}','{$pointqty}','{$getdate}','{$userip}','{$levelid}',
-					{$inputstatus},'{$boardid}','{$scannik}'");
+					'{$ng}','{$getdate}','{$userip}','{$levelid}',{$inputstatus},'{$boardid}','{$scannik}','{$partno}','{$partaddress}'");
 
 		$rs->Close();
 		
@@ -70,14 +69,12 @@
 	}
 	// Message
 	switch ($var_msg){
-		case $db->ErrorNo();
-			$err	= $db->ErrorMsg();
-			$error	= str_replace(chr(39), "", $err);
+		case ($var_msg != 1):
+			$err = $db->ErrorMsg();
+      		$error = str_replace( "'", "`", $err);
+      		$error_msg = str_replace( "[Microsoft][ODBC SQL Server Driver][SQL Server]", "", $error);
 
-			echo "{
-				'success': false,
-				'msg': '$error'
-			}";
+			echo "{ 'success': false, 'msg': '<h4 style=\"margin-top:5px;\">$error_msg</h4>' }";
 		break;
 		case 1:
 			echo "{

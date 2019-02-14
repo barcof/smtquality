@@ -25,8 +25,12 @@
         $userip = 'UNKNOWN';
 	}
 	
-	$inputid	= $_REQUEST['fld_inputid'];
-	$cbxinputid = $_REQUEST['cbx_inputid'];
+	$inputcode 	= $_REQUEST['inputcode'];
+	if ($inputcode == 0) {
+		$inputid = $_REQUEST['fld_inputid'];
+	} else {
+		$inputid = $_REQUEST['cbx_inputid'];
+	}
 	$partno		= $_REQUEST['fld_part'];
 	$selectqty	= $_REQUEST['fld_selectqty'];
 	$ngqty		= $_REQUEST['fld_repairqty'];
@@ -50,8 +54,7 @@
 		if($_FILES["fld_photo"]["error"] == 4) {
 			
 			$filename = null;
-			
-			$rs = $db->Execute("exec InsertRejection '{$cbxinputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+			$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
 					'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
 					
 			$rs->Close();
@@ -68,7 +71,7 @@
 				
 				if (move_uploaded_file($tmpfile, $dir.$file)){
 					
-					$rs = $db->Execute("exec InsertRejection '{$cbxinputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+					$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
 					'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
 					
 					$rs->Close();

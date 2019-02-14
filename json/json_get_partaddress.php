@@ -18,11 +18,12 @@
 	$model_name = isset($_REQUEST['model_name']) ? $_REQUEST['model_name'] : '';
 	$location = isset($_REQUEST['location']) ? $_REQUEST['location'] : '';
 	$pcb_name = isset($_REQUEST['pcb_name']) ? $_REQUEST['pcb_name'] : '';
+	$stserial = isset($_REQUEST['stserial']) ? $_REQUEST['stserial'] : '';
 
 	/**	run query **/
-		$rs 		= $dbtrc->Execute(" SELECT DISTINCT partno FROM tblMounterFind WHERE model = '{$model_name}' and partloc = '{$location}' and board = '{$pcb_name}'");
+		$rs 		= $dbtrc->Execute(" SELECT DISTINCT partno FROM tblMounterFind WHERE model = '{$model_name}' AND partloc = '{$location}' AND board = '{$pcb_name}' AND stserial = '{$stserial}' ");
 		$partno 	= $rs->fields['0'];
-		$getaddress = $dboutset->Execute(" SELECT loc FROM addrs WHERE partnumber = '{$partno}'");
+		$getaddress = $dboutset->Execute(" SELECT loc FROM addrs WHERE partnumber = '{$partno}' ");
 		$return 	= array();
 	//	-----***-----  //
 	
@@ -38,6 +39,9 @@
 	echo json_encode($o);
 	
 	$rs->Close();
+	$getaddress->Close();
 	$dbtrc->Close();
 	$dbtrc=null;
+	$dboutset->Close();
+	$dboutset=null;
 ?>

@@ -17,7 +17,7 @@
 	
 	/**	run query **/
 			$rs = $db->Execute(" declare @totalcount as int exec DisplayOEM $start, $limit, '{$boardid}', '{$mchname}', '{$modelname}', '{$stserial}', @totalcount=@totalcount out");
-			$totalcount = $rs->fields['23'];
+			$totalcount = $rs->fields['20'];
 			$return = array();
 			
 	//	-----***-----  //
@@ -38,16 +38,13 @@
 		$return[$i]['pcb_name']		= trim($rs->fields['10']);
 		$return[$i]['pwb_no']		= trim($rs->fields['11']);
 		$return[$i]['process']		= trim($rs->fields['12']);
-		$return[$i]['ai']			= trim($rs->fields['13']);
-		$return[$i]['smt']			= trim($rs->fields['14']);
-		$return[$i]['loc']			= trim($rs->fields['15']);
-		$return[$i]['magazineno']	= trim($rs->fields['16']);
-		$return[$i]['ng']			= trim($rs->fields['17']);
-		$return[$i]['boardid']		= trim($rs->fields['18']);
-		$return[$i]['boardke']		= trim($rs->fields['19']);
-		$return[$i]['boardqty']		= (float)trim($rs->fields['20']);
-		$return[$i]['pointqty']		= (float)trim($rs->fields['21']);
-		$return[$i]['inputdate']	= $rs->fields['22'];
+		$return[$i]['smt']			= trim($rs->fields['13']);
+		$return[$i]['loc']			= trim($rs->fields['14']);
+		$return[$i]['magazineno']	= trim($rs->fields['15']);
+		$return[$i]['ng']			= trim($rs->fields['16']);
+		$return[$i]['boardid']		= trim($rs->fields['17']);
+		$return[$i]['inputdate']	= $rs->fields['18'];
+		$return[$i]['cekstatus']	= trim($rs->fields['19']);
 		
 		$rs->MoveNext();
 	}

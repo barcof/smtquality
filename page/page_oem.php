@@ -42,6 +42,20 @@
 			}
 		}
 
+		function coloring(value) {
+			var x = value;
+			hasil = x.split(",");
+
+			// return hasil[0]+hasil[1];
+
+			// if((hasil[0] = 'VIDEO UNIT' || hasil[0] = 'video unit') && (hasil[1] == 'V1' || hasil[1] == 'V2' || hasil[1] == 'V3')) {
+			// 	return 'forbidden';
+			// }
+
+
+			// console.log(split);
+		}
+
 		var filtersCfg = {
 			ftype: 'filters',
 			autoReload: true, //don't reload automatically
@@ -62,9 +76,6 @@
 				{ type: 'string', dataIndex: 'loc' },
 				{ type: 'string', dataIndex: 'magazineno' },
 				{ type: 'string', dataIndex: 'ng' },
-				{ type: 'string', dataIndex: 'boardke' },
-				{ type: 'string', dataIndex: 'boardqty' },
-				{ type: 'string', dataIndex: 'pointqty' },
 				{ type: 'string', dataIndex: 'inputdate' }
 			]
 		};
@@ -77,7 +88,7 @@
 
 		Ext.define('disp_inqual',{
 			extend	: 'Ext.data.Model',
-			fields	: ['inputid','dateid','group','shift','mch','model_name','start_serial','serial_no','lot_no','lot_qty','pcb_name','pwb_no','process','ai','smt','loc','magazineno','ng','boardid','boardke','boardqty','pointqty','inputdate']
+			fields	: ['inputid','dateid','group','shift','mch','model_name','start_serial','serial_no','lot_no','lot_qty','pcb_name','pwb_no','process','smt','loc','magazineno','ng','boardid','inputdate','cekstatus']
 		});
 		Ext.define('prcode_store',{
 			extend	: 'Ext.data.Model',
@@ -90,10 +101,6 @@
 		Ext.define('pcb_store',{
 			extend	: 'Ext.data.Model',
 			fields	: ['pcbno', 'pcbname']
-		});
-		Ext.define('ai_store',{
-			extend	: 'Ext.data.Model',
-			fields	: ['aino', 'ainame']
 		});
 		Ext.define('ng_store',{
 			extend	: 'Ext.data.Model',
@@ -109,11 +116,11 @@
 		});
 		Ext.define('get_partno_repair',{
 			extend	: 'Ext.data.Model',
-			fields 	: ['partno','model','pcbname','location']
+			fields 	: ['partno','model','pcbname','location','stserial']
 		});
 		Ext.define('get_oem',{
 			extend	: 'Ext.data.Model',
-			fields 	: ['inputid','ngloc','symptom']
+			fields 	: ['inputid','ngloc','symptom','pcbname','stserial']
 		});
 		Ext.define('get_partaddress',{
 			extend: 'Ext.data.Model',
@@ -155,20 +162,6 @@
 			proxy	: {
 				type	: 'ajax',
 				url		: 'json/json_pcb.php',
-				reader	: {
-					type			: 'json',
-					root			: 'rows',
-					totalProperty	: 'totalCount'
-				}
-			}
-		});
-		var ai_store = Ext.create('Ext.data.Store',{
-			model	: 'ai_store',
-			autoLoad: true,
-			pageSize: 10,
-			proxy	: {
-				type	: 'ajax',
-				url		: 'json/json_ai.php',
 				reader	: {
 					type			: 'json',
 					root			: 'rows',
@@ -229,19 +222,6 @@
 				}
 			}
 		});
-		var cbx_ai = Ext.create('Ext.data.Store',{
-			model	: 'ai_store',
-			autoLoad: true,
-			proxy	: {
-				type	: 'ajax',
-				url		: 'json/json_cbx_ai.php',
-				reader	: {
-					type			: 'json',
-					root			: 'rows',
-					totalProperty	: 'totalCount'
-				}
-			}
-		});
 		var cbx_ng = Ext.create('Ext.data.Store',{
 			model	: 'ng_store',
 			autoLoad: true,
@@ -287,7 +267,7 @@
 						Ext.getCmp('fld_proc').setValue(process);
 						Ext.getCmp('hid_proc').setValue(process);
 					} else {
-						console.log(records);
+						// console.log(records);
 					}
 				}
 			}
@@ -338,21 +318,21 @@
 					root : 'rows'
 				}
 			},
-			listeners: {
-				load: function(store, records) {
-					if (records != '') {
-						var partno = store.getAt(0).get('partno');
-						Ext.getCmp('fld_part_oem').setValue(partno);
-						Ext.getCmp('fld_partno').setValue(partno);
-					} else {
-						console.log(records);
-					}
-				}
-			}
+			// listeners: {
+			// 	load: function(store, records) {
+			// 		if (records != '') {
+			// 			var partno = store.getAt(0).get('partno');
+			// 			Ext.getCmp('fld_part_oem').setValue(partno);
+			// 			Ext.getCmp('fld_partno').setValue(partno);
+			// 		} else {
+			// 			console.log('PART TIDAK ADA');
+			// 		}
+			// 	}
+			// }
 		});
 		var get_oem = Ext.create('Ext.data.Store',{
 			model : 'get_oem',
-			autoLoad: false,
+			autoLoad: true,
 			proxy : {
 				type: 'ajax',
 				url: 'json/json_get_oem.php',
@@ -360,22 +340,22 @@
 					type : 'json',
 					root : 'rows'
 				}
-			},
-			listeners: {
-				load: function(store, records) {
-					if (records != '') {
-						var inputid = store.getAt(0).get('inputid');
-						var ngloc = store.getAt(0).get('ngloc');
-						var symptom = store.getAt(0).get('symptom');
-						Ext.getCmp('fld_inputid').setValue(inputid);
-						Ext.getCmp('cbx_inputid').setValue(inputid);
-						Ext.getCmp('label_ngloc').setValue(ngloc);
-						Ext.getCmp('label_symptom').setValue(symptom);
-					} else {
-						console.log(records);
-					}
-				}
 			}
+			// listeners: {
+			// 	load: function(store, records) {
+			// 		if (records != '') {
+			// 			var inputid = store.getAt(0).get('inputid');
+			// 			var ngloc = store.getAt(0).get('ngloc');
+			// 			var symptom = store.getAt(0).get('symptom');
+			// 			Ext.getCmp('fld_inputid').setValue(inputid);
+			// 			Ext.getCmp('cbx_inputid').setValue(inputid);
+			// 			Ext.getCmp('label_ngloc').setValue(ngloc);
+			// 			Ext.getCmp('label_symptom').setValue(symptom);
+			// 		} else {
+			// 			// console.log(records);
+			// 		}
+			// 	}
+			// }
 		});
 		var get_partaddress = Ext.create('Ext.data.Store',{
 			model : 'get_partaddress',
@@ -404,6 +384,222 @@
 			}
 		});
 
+		//-----------------------------------------------------------------------------------------------------------//
+
+
+		var window_followup = Ext.create('Ext.window.Window',{
+			layout: 'anchor',
+			name: 'win_folloup',
+			closeAction: 'hide',
+			animateTarget: 'btn_add_reject',
+			minWidth: 425,
+			minHeight: 120,
+			items: {
+				xtype: 'form',
+				title: 'FORM FOLLOW UP',
+				name: 'form_followup',
+				style: 'text-align:center',
+				fieldDefaults: {msgTarget:'side'},
+				layout: {
+					type: 'vbox',
+					align: 'stretch'
+				},
+				items: [{
+					xtype: 'textfield',
+					id: 'oemfollowup',
+					name: 'oemfollowup',
+					fieldStyle: 'text-align:center;font-size: 24px',
+					emptyText: 'SCAN BOARD HERE ...',
+					padding: '5 5 0 5',
+					width: 400,
+					height: 50,
+					listeners: {
+						specialkey: function(field, e) {
+							if(e.getKey() == e.ENTER) {
+								var val = field.getValue();
+								var len = val.length;
+								if(len >= 24) {
+									get_oem.proxy.setExtraParam('boardid',val);
+									get_oem.loadPage(0);
+
+									// load the store then get pcb name & ng location for validation purpose
+									get_oem.on('load', function (store, records, successful, eOpts) {
+								        // console.log(records);
+
+										if (records == '') {
+											console.log('Part belum di input');
+										} else {
+											var inputid = records[0].get('inputid');
+											var pcbname = records[0].get('pcbname');
+											var symptom = records[0].get('symptom');
+											var ngloc = records[0].get('ngloc');
+											var stserial = records[0].get('stserial');
+											var trim_pcbname = pcbname.trim();
+											var trim_ngloc = ngloc.trim();
+
+											if(trim_pcbname == 'VIDEO UNIT' && (trim_ngloc == 'V1' || trim_ngloc == 'V2' || trim_ngloc == 'V3')) {
+												Ext.MessageBox.show({
+													title: 'WARNING',
+													msg: '<h1 style="color:red;padding-top:5px">PART CANNOT BE REPAIRED</h1>',
+													animateTarget: 'oemfollowup',
+													icon: Ext.MessageBox.WARNING
+												});
+											} else {
+												rejection(val);
+												Ext.getCmp('fld_inputid').setValue(inputid);
+												Ext.getCmp('cbx_inputid').setValue(inputid);
+												Ext.getCmp('label_ngloc').setValue(ngloc);
+												Ext.getCmp('label_symptom').setValue(symptom);
+												Ext.getCmp('fld_res').setValue(field.getValue());
+												Ext.getCmp('fld_stserial').setValue(stserial);
+											}
+										}
+										return false;
+									});
+								} else {
+									Ext.MessageBox.alert('WARNING','<h1 style="color:red">PLEASE SCAN BOARD ID FIRST</h1>');
+								}
+								// console.log(len);
+							} else { return false; }
+						}
+					}
+				}]
+			},
+			listeners: {
+				hide: function(v, eOpts) {
+					Ext.ComponentQuery.query('form[name=form_followup]')[0].form.reset();
+				}
+			}
+		});
+
+		var window_validate = Ext.create('Ext.window.Window',{
+			layout: 'anchor',
+			name: 'window_validate',
+			closeAction: 'hide',
+			animateTarget: 'btn_valid',
+			items: [{
+				xtype: 'form',
+				title: '<h2>FORM CHECK PART</h2>',
+				titleAlign: 'center',
+				name: 'form_validate',
+				defaults: { 
+					padding: '5 5 0 5',
+					width: 400,
+					height: 50,
+					fieldStyle: 'text-align:center;font-size: 20px'
+				},
+				fieldDefaults: {msgTarget:'under'},
+				layout: { type: 'vbox', align: 'stretch' },
+				defaultType: 'textfield',
+				items: [{
+					name: 'chk_nik',
+					emptyText: 'SCAN NIK',
+					allowBlank: false,
+					listeners: {
+						specialkey: function(field, e) {
+							if (e.getKey() == e.ENTER) {
+								var txtval = field.getValue();
+								var len = txtval.length;
+								if (len != 0 && len >= 5) {
+									Ext.ComponentQuery.query('textfield[name=chk_boardid]')[0].setDisabled(false);
+									Ext.ComponentQuery.query('textfield[name=chk_partno]')[0].setDisabled(false);
+								} else {
+
+								}
+								Ext.ComponentQuery.query('textfield[name=chk_boardid]')[0].focus(true,1);
+							}
+						},
+						change: function(field) {
+							var len = field.getValue().length;
+							if (len == 0) {
+								Ext.ComponentQuery.query('textfield[name=chk_boardid]')[0].setDisabled(true);
+								Ext.ComponentQuery.query('textfield[name=chk_partno]')[0].setDisabled(true);
+							}
+						}
+					}
+				},{
+					name: 'chk_boardid',
+					emptyText: 'SCAN BOARD',
+					disabled: true,
+					allowBlank: false,
+					listeners: {
+						specialkey: function(field, e) {
+							if (e.getKey() == e.ENTER) {
+								var txtval = field.getValue();
+								var len = txtval.length;
+								if (len >= 24) {
+
+								}
+							}
+						}
+					}
+				},{
+					name: 'chk_partno',
+					emptyText: 'SCAN PART',
+					disabled: true,
+					allowBlank: false
+				},{
+					xtype: 'hiddenfield',
+					id: 'chk_inputid',
+					name: 'chk_inputid'
+					// listeners: {
+					// 	change: function(field) {
+					// 		console.log('input id = '+field.getValue());
+					// 	}
+					// }
+				}],
+				buttons: [{
+					text: 'CLEAR',
+					name: 'chk_clear',
+					iconAlign: 'top',
+					iconCls: 'refresh',
+					scale: 'medium',
+					handler: function() {
+						this.up('form').getForm().reset();
+					}
+				},'->',
+				{
+					text: 'SUBMIT',
+					name: 'chk_submit',
+					iconAlign: 'top',
+					iconCls: 'submit',
+					scale: 'medium',
+					handler: function() {
+						var form = this.up('form').getForm();
+						var popwindow = this.up('window');
+						if (form.isValid()) {
+							form.submit({
+								url: 'resp/resp_input_validate.php',
+								waitMsg: 'sending data',
+								submitEmptyText	: false,
+								success: function(form, action) {
+									Ext.Msg.show({
+										title:'Success - Input Data',
+										icon: Ext.Msg.SUCCESS,
+										msg: action.result.msg,
+										buttons: Ext.Msg.OK
+									});
+									form.reset();
+									// rejection_store.loadPage(0);
+									// data_store.loadPage(1);
+								},
+								failure: function(form, action) {
+									Ext.Msg.show({
+										title:'Failed - Input Data',
+										icon: Ext.Msg.ERROR,
+										msg: action.result.msg,
+										buttons: Ext.Msg.OK
+									});
+								}
+							});
+						}
+					}
+				}]
+			}]
+		});
+
+		//-----------------------------------------------------------------------------------------------------------//
+
 		//	grid panel
 		var clock = Ext.create('Ext.toolbar.TextItem', {text: Ext.Date.format(new Date(), 'g:i:s A')});
 		var grid_data = Ext.create('Ext.grid.Panel', {
@@ -422,8 +618,20 @@
 			columnLines	: true,
 			multiSelect	: true,
 			viewConfig	: {
-					stripeRows          : true,
-					enableTextSelection : true
+				stripeRows          : true,
+				enableTextSelection : true,
+				getRowClass: function(record) {
+					var x = record.get('cekstatus');
+					hasil = x.split(",");
+					hasil_kiri = hasil[0].trim();
+					hasil_kanan = hasil[1].trim();
+
+					// console.log(hasil_kiri+': '+hasil_kiri.length);
+
+					if((hasil_kiri == 'VIDEO UNIT' || hasil_kiri == 'video unit') && (hasil_kanan == 'V1' || hasil_kanan == 'V2' || hasil_kanan == 'V3')) {
+						return 'forbidden';
+					}
+				}
 			},
 			features: [groupingFeature,filtersCfg],
 			//----------------------------COLUMN---------------------------//
@@ -467,7 +675,7 @@
 					locked		: false
 				},{ header		: 'Board ID',
 					dataIndex	: 'boardid',
-					width		: 70,
+					width		: 180,
 					editor		: {xtype:'textfield',allowBlank:false}
 				},{ header		: 'Lot No',
 					dataIndex	: 'lot_no',
@@ -495,12 +703,6 @@
 					width		: 60,
 					locked		: false,
 					editor		: {xtype:'textfield',allowBlank:false}
-				},{ header		: 'AI',
-					dataIndex	: 'ai',
-					width		: 100,
-					locked		: false,
-					hidden		: true,
-					editor		: {xtype:'combobox',queryMode: 'local',store: cbx_ai,displayField: 'ainame',valueField: 'ainame'}
 				},{ header		: 'Problem/Symptom',
 					dataIndex	: 'smt',
 					width		:150,
@@ -518,24 +720,10 @@
 					dataIndex	: 'ng',
 					width		: 100,
 					editor		: {xtype:'combobox',queryMode: 'local',store: cbx_ng,displayField: 'ngname',valueField: 'ngname',editable:false}
-				},{ header		: 'Board No',
-					dataIndex	: 'boardke',
-					width		: 70,
-					editor		: {xtype:'textfield',allowBlank:false}
-				},{ header		: 'Board NG Qty',
-					dataIndex	: 'boardqty',
-					width		: 100,
-					summaryType	: 'sum',
-					editor		: {xtype:'textfield',allowBlank:false,maskRe:/[0-9]/}
-				},{ header		: 'Point NG Qty',
-					dataIndex	: 'pointqty',
-					width		: 100,
-					summaryType	: 'sum',
-					editor		: {xtype:'textfield',allowBlank:false,maskRe:/[0-9]/}
 				},{ header		: 'Input Date',
 					dataIndex	: 'inputdate',
 					width		: 130
-				}
+				},{ header		: 'Cek Status', dataIndex: 'cekstatus', width: 150, hidden: true }
 			],
 			//	end columns
 			listeners: {
@@ -586,7 +774,7 @@
 			selModel: { selType: 'cellmodel' },
 			plugins: [cellEditing],
 			tbar	: [{xtype:'tbspacer',width:10},
-				{	xtype	: 'button',
+				{	xtype	: 'button',		// refresh
 					id		: 'btn_refresh',
 					iconCls	: 'refresh',
 					iconAlign: 'top',
@@ -605,13 +793,12 @@
 						cbx_prcode.loadPage(1);
 						cbx_mch.loadPage(1);
 						cbx_pcb.loadPage(1);
-						cbx_ai.loadPage(1);
 						cbx_ng.loadPage(1);
 						rejection_store.proxy.setExtraParam('inputid', '');
 						rejection_store.loadPage(1);
 					}
 				},
-				{	xtype	: 'button',
+				{	xtype	: 'button',		// input data
 					id		: 'btn_input',
 					iconCls	: 'input',
 					iconAlign: 'top',
@@ -619,7 +806,40 @@
 					scale	: 'medium',
 					handler	: input
 				},
-				{ 	xtype	: 'button',
+				{	xtype	: 'button',		// validasi part
+					iconAlign: 'top',
+					iconCls	: 'validate',
+					id 		: 'btn_valid',
+					scale 	: 'medium',
+					text 	: 'Check Part',
+					handler	: function() {
+						var record = grid_data.getSelectionModel().getSelection();
+						if (record == 0 ) {
+							Ext.Msg.show({
+								title	: 'Failure - Select Data',
+								icon	: Ext.Msg.ERROR,
+								msg		: '<h2 class="error-msg">Select record first</h2>',
+								buttons	: Ext.Msg.OK
+							});
+						} else {
+							var inputid = record[0].data.inputid;
+							Ext.getCmp('chk_inputid').setValue(inputid);
+							// console.log();
+							window_validate.show();
+						}
+					}
+				},
+				{ 	xtype	: 'button',		// follow up
+					iconAlign: 'top',
+					iconCls	: 'reject',
+					id		: 'btn_add_reject',
+					scale	: 'medium',
+					text	: 'Follow Up',
+					handler	: function() {
+						window_followup.show();
+					}
+				},
+				{ 	xtype	: 'button',		// update
 					id		: 'btn_update',
 					iconCls	: 'update',
 					iconAlign: 'top',
@@ -627,7 +847,7 @@
 					scale	: 'medium',
 					// handler	: update
 				},
-				{ 	xtype	: 'button',
+				{ 	xtype	: 'button',		// delete
 					id		: 'btn_del',
 					iconCls	: 'delete',
 					iconAlign: 'top',
@@ -635,7 +855,7 @@
 					scale	: 'medium',
 					// handler	: del
 				},
-				{	xtype	: 'button',
+				{	xtype	: 'button',		// search
 					id		: 'btn_src',
 					iconCls	: 'search',
 					iconAlign: 'top',
@@ -644,7 +864,7 @@
 					// handler	: search
 					//hidden	: true // remove this to show search button
 				},
-				{	xtype	: 'button',
+				{	xtype	: 'button',		// input serial fa
 					id		: 'btn_input_serialno',
 					iconCls	: 'input',
 					iconAlign: 'top',
@@ -652,7 +872,7 @@
 					scale	: 'medium',
 					// handler	: input_serialno
 				},
-				{	xtype	: 'button',
+				{	xtype	: 'button',		// search serial fa
 					id		: 'btn_src_serialno',
 					iconCls	: 'search',
 					iconAlign: 'top',
@@ -660,7 +880,7 @@
 					scale	: 'medium',
 					// handler	: search_serialno
 				},
-				{ 	xtype	: 'button',
+				{ 	xtype	: 'button',		// download
 					id		: 'btn_download',
 					iconCls	: 'download',
 					iconAlign: 'top',
@@ -668,30 +888,8 @@
 					scale	: 'medium',
 					// handler	: download
 				},
-				{ 	xtype: 'textfield',
-					id: 'oemfollowup',
-					name: 'oemfollowup',
-					fieldLabel: 'Follow Up',
-					emptyText: 'SCAN BOARD ID HERE ...',
-					labelWidth: 55,
-					listeners: {
-						specialkey: function(field, e) {
-							if(e.getKey() == e.ENTER) {
-								var val = field.getValue();
-								var len = val.length;
-								if(len >= 24) {
-									rejection();
-									Ext.getCmp('fld_res').setValue(val);
-								} else {
-									Ext.MessageBox.alert('WARNING','<h1 style="color:red">PLEASE SCAN BOARD ID FIRST</h1>');
-								}
-								// console.log(len);
-							} else { return false; }
-						}
-					}
-				},
 				'->',
-				{	text  	: 'Settings',
+				{	text  	: 'Settings',	// settings
 					id		: 'btn_settings',
 					iconCls	: 'setting',
 					iconAlign: 'top',
@@ -712,18 +910,12 @@
 							id		: 'btn_pcb',
 							// handler	: pcb
 						},
-						{	text	: 'AI Category',
-							iconCls	: 'machine-16',
-							id		: 'btn_ai',
-							// handler	: ai
-						},
 						{	text	: 'NG Category',
 							iconCls	: 'machine-16',
 							id		: 'btn_ng',
 							// handler	: ng
 						}
 					]
-
 				},
 				'-',
 				{ 	xtype		: 'label',
@@ -746,16 +938,16 @@
 				}
 			})
 		});
-		
+
 		//-----------------------------------------------------[-Input Rejection-]
 		function rejection(){
-			var win_rejection;
 
-			var boardid = Ext.getCmp('oemfollowup').getValue(); // get board id
-			get_partno.proxy.setExtraParam('boardid',boardid); // set parameter to get partnumber based on boardid
-			get_oem.proxy.setExtraParam('boardid',boardid); // set parameter to get inputid, symptom & location
-			get_partno.loadPage(0);
-			get_oem.loadPage(0);
+			// var boardid = Ext.getCmp('oemfollowup').getValue(); // get board id
+			// get_partno.proxy.setExtraParam('boardid',boardid); // set parameter to get partnumber based on boardid
+			// get_oem.proxy.setExtraParam('boardid',boardid); // set parameter to get inputid, symptom & location
+			// get_partno.loadPage(0);
+			// get_oem.loadPage(0);
+			var win_rejection;
 
 			if(!win_rejection){
 				var panel_rejection = Ext.create('Ext.panel.Panel',{
@@ -767,29 +959,25 @@
 						split		: true
 					},
 					items: [{
-						title		: 'Input Product',
-						region		: 'north',
+						title		: 'Input Product',	// region form input
+						region		: 'west',
+						layout		: 'fit',
 						items		: [{
-							xtype		: 'form',
+							xtype		: 'form',	// form
 							id			: 'form_rejection',
 							name		: 'form_rejection',
-							width		: '100%',
-							//height		: 245,
+							width		: 320,
+							// height		: '100%',
 							bodyStyle	: {
 								background	: 'url(img/banner.jpg) no-repeat top left',
 								backgroundSize: 'cover'
 							},
-							style		: {
-								background	: '#008080'
-							},
-							layout		: {
-								type : 'hbox',
-								pack : 'center',
-								align: 'stretch'
-							},
-							items		: [
-							{ 	xtype: 'container',
-								layout:	'vbox',
+							style		: { background	: '#008080' },
+							layout		: { type : 'vbox', pack : 'center', align: 'stretch' },
+							items		: [{
+								xtype: 'container',	// container 1
+								layout:	{ type : 'vbox', pack : 'center', align: 'stretch' },
+								padding: '0 5 0 5',
 								items: [{
 									xtype : 'combo',
 									id : 'cbx_inputid',
@@ -798,8 +986,7 @@
 									afterLabelTextTpl : required,
 									allowBlank : false,
 									labelSeparator : ' ',
-									margin : '5 10 5 10',
-									width: 360,
+									margin : '0 10 5 10',
 									queryMode : 'local',
 									store : get_oem,
 									displayField : 'inputid',
@@ -816,28 +1003,33 @@
 										}
 									}
 								},
-								{	xtype			: 'textfield',
-									margin			: '0 10 5 10',
-									fieldLabel		: 'Symptom',
-									id				: 'label_symptom',
-									name			: 'label_symptom',
-									labelSeparator	: ' ',
-									readOnly		: true,
-									width			: 360
+								{	xtype: 'textfield',
+									margin: '0 10 5 10',
+									fieldLabel: 'Symptom',
+									id: 'label_symptom',
+									name: 'label_symptom',
+									labelSeparator: ' ',
+									readOnly: true
+								},
+								{	xtype: 'textfield',
+									margin: '0 10 10 10',
+									fieldLabel: 'NG Location',
+									id: 'label_ngloc',
+									name: 'label_ngloc',
+									labelSeparator: ' ',
+									readOnly: true
+									// value			: location
 								},
 								{
-									xtype			: 'fieldset',
-									title			: '<b style="color:black;font-size:14px;">ACTION TO PRODUCT</b>',
-									width			: 390,
-									defaultType		: 'textfield',
-									defaults		: {
-										width	: 360
-									},
-									items			: [
-									{ 	fieldLabel			: 'Part No',
-										id					: 'fld_part_oem',
-										name				: 'fld_part_oem',
-										labelSeparator		: ' ',
+									xtype: 'fieldset',
+									title: '<b style="color:black;font-size:14px;">ACTION TO PRODUCT</b>',
+									defaultType: 'textfield',
+									layout: {type:'vbox',align:'stretch'},
+									items: [
+									{ 	fieldLabel: 'Part No',
+										id: 'fld_part_oem',
+										name: 'fld_part_oem',
+										labelSeparator: ' ',
 										listeners: {
 											specialkey: function(field, e) {
 												if (e.getKey() == e.ENTER) {
@@ -879,85 +1071,59 @@
 												}
 											}
 										}
-									},{ fieldLabel			: 'Checked By',
-										id					: 'fld_checkby',
-										name				: 'fld_checkby',
-										labelSeparator		: ' '
-									},{ fieldLabel			: 'Board ID',
-										id					: 'fld_res',
-										name				: 'fld_res',
-										labelSeparator		: ' '
+									},{ fieldLabel: 'Checked By',
+										id: 'fld_checkby',
+										name: 'fld_checkby',
+										labelSeparator: ' '
+									},{ fieldLabel: 'Board ID',
+										id: 'fld_res',
+										name: 'fld_res',
+										labelSeparator: ' ',
+										// value: Ext.getCmp('oemfollowup').getValue()
 									}]
 								}]
-							},{xtype:'tbspacer',width:10},
-							{	xtype: 'container',
-								layout:	'vbox',
-								// width: 430,
-								items: [{xtype:'tbspacer',height: 35},
-									{	xtype			: 'textfield',
-										margin			: '0 10 5 10',
-										fieldLabel		: 'NG Location',
-										id				: 'label_ngloc',
-										name			: 'label_ngloc',
-										labelSeparator	: ' ',
-										readOnly		: true,
-										width			: 360,
-										// value			: location
-									},
-									{ 	xtype			: 'fieldset',
-										title			: '<b style="color:black;font-size:14px;">ACTION TO PROCESS</b>',
-										width			: 390,
-										defaultType		: 'textfield',
-										defaults		: {
-											width	: 360,
-											padding	: '4 0 4 0'
-										},
-										items			: [
-											{	xtype				: 'textareafield',
-												fieldLabel			: 'Description',
-												id					: 'fld_desc',
-												name				: 'fld_desc',
-												labelSeparator		: ' '
-											},{	fieldLabel			: 'PIC',
-												id					: 'fld_pic',
-												name				: 'fld_pic',
-												labelSeparator		: ' '
-											},{	xtype				: 'filefield',
-												id					: 'fld_photo',
-												name				: 'fld_photo',
-												fieldLabel			: 'Upload Image',
-												buttonText			: '•••',
-												msgTarget			: 'side',
-												labelSeparator		: ' '
-											},{	xtype				: 'hiddenfield',
-												id					: 'fld_inputid',
-												name				: 'fld_inputid',
-												labelSeparator		: ' ',
-												listeners: {
-													change: function(field) {
-														console.log(field.getValue());
-														var inputid = field.getValue();
-														rejection_store.proxy.setExtraParam('inputid', inputid);
-														rejection_store.loadPage(1);
-													}
-												}
-											}
-										]
-									}, {
-										xtype			: 'textfield',
-										fieldLabel		: 'Reel Number',
-										id				: 'fld_reel',
-										name			: 'fld_reel',
-										width			: 370,
-										labelWidth		: 110,
-										maxLength		: 30,
-										emptyText		: 'Input If Repaired by Change Part',
-										labelSeparator	: ' ',
-										listeners 		: {
+							},
+							{	xtype: 'container',	// container 2
+								layout:	{ type : 'vbox', pack : 'center', align: 'stretch' },
+								padding: '0 5 0 5',
+								items: [{ 	
+									xtype: 'fieldset',
+									title: '<b style="color:black;font-size:14px;">ACTION TO PROCESS</b>',
+									defaultType: 'textfield',
+									layout: {type:'vbox',align:'stretch'},
+									items: [{	
+										xtype: 'textareafield',
+										fieldLabel: 'Description',
+										height: 40,
+										id: 'fld_desc',
+										name: 'fld_desc',
+										labelSeparator: ' '
+									},{	
+										fieldLabel: 'PIC',
+										id: 'fld_pic',
+										name: 'fld_pic',
+										labelSeparator: ' '
+									},{	
+										xtype: 'filefield',
+										id: 'fld_photo',
+										name: 'fld_photo',
+										fieldLabel: 'Upload Image',
+										buttonText: '•••',
+										// width: 50,
+										msgTarget: 'side',
+										labelSeparator: ' '
+									},{
+										xtype: 'textfield',
+										fieldLabel: 'Reel Number',
+										id: 'fld_reel',
+										name: 'fld_reel',
+										emptyText: 'Scan Part Here . . .',
+										labelSeparator: ' ',
+										listeners: {
 											specialkey: function(field, e) {
 												if (e.getKey() == e.ENTER) {
 													var reel = field.getValue().substr(0,15);
-													var part = Ext.getCmp('fld_part').getValue();
+													var part = Ext.getCmp('fld_part_oem').getValue();
 													if (reel != part) {
 														Ext.Msg.alert('WARNING','<span style="color:red;font-size:32px;text-align:center">Wrong Part !</span>');
 														field.reset();
@@ -974,8 +1140,31 @@
 								                field.setValue(field.getValue().toUpperCase());
 								            }
 										}
-									}
-								]
+									},{	
+										xtype: 'hiddenfield',
+										id: 'fld_inputid',
+										name: 'fld_inputid',
+										labelSeparator: ' ',
+										listeners: {
+											change: function(field) {
+												console.log(field.getValue());
+												var inputid = field.getValue();
+												rejection_store.proxy.setExtraParam('inputid', inputid);
+												rejection_store.loadPage(1);
+											}
+										}
+									},{
+										xtype: 'hiddenfield',
+										id: 'fld_stserial',
+										name: 'fld_stserial',
+										labelSeparator: ' ',
+										listeners: {
+											change: function(field) {
+												console.log('Start Serial = '+field.getValue());
+											}
+										}
+									}]
+								}]
 							}],
 							buttons		: [
 								{
@@ -1000,7 +1189,7 @@
 												url				: 'resp/resp_input_rejection.php',
 												waitMsg			: 'sending data',
 												submitEmptyText	: false,
-
+												params: 'inputcode='+1,
 												success	: function(form, action) {
 													Ext.Msg.show({
 														title		:'Success - Input Data',
@@ -1024,12 +1213,11 @@
 											});
 										}
 									}
-
 								}
 							]
 						}]
 					},{
-						title		: 'Product',
+						title		: 'Product',	// region grid
 						region		: 'center',
 						layout		: 'fit',
 						items		: [{
@@ -1143,6 +1331,7 @@
 					minHeight		: 600,
 					layout			: 'fit',
 					animateTarget	: 'oemfollowup',
+					closeAction		: 'destroy',
 					items			: panel_rejection,
 					bodyStyle		: 'background:#008080',
 					bodyBorder		: false,
@@ -1153,14 +1342,35 @@
 					listeners	: {
 						activate:function(){
 							Ext.ComponentQuery.query('textfield[name=oemfollowup]')[0].disable();
+							var boardid = Ext.getCmp('oemfollowup').getValue(); // get board id
+							get_partno.proxy.setExtraParam('boardid',boardid); // set parameter to get partnumber based on boardid
+							get_partno.loadPage(0);
+
+							get_partno.on('load', function (store, records, successful, eOpts) {
+						        // console.log(records);
+
+						        if (records == '') {
+						        	console.log('Part tidak ada');
+						        } else {
+						        	var partno = records[0].get('partno');
+
+							        Ext.getCmp('fld_part_oem').setValue(partno);
+									// Ext.getCmp('fld_partno').setValue(partno);
+
+									return false;
+						        }
+
+						        return false;
+							});
 						},
 						close:function(){
 							Ext.ComponentQuery.query('textfield[name=oemfollowup]')[0].enable();
+							// window_followup.close();
 						}
 					}
 				});
 			}
-			win_rejection.show();
+			win_rejection.show();			
 		}
 
 		//-----------------------------------------------------[-Input Quality-]
@@ -1381,18 +1591,6 @@
 								{ id: 'dm2', 	boxLabel: 'DM 2', 	name: 'fld_proc', 	inputValue: 'DM 2', 	width: 100 	},
 								{ id: 'cm',		boxLabel: 'CM', 	name: 'fld_proc', 	inputValue: 'CM', 		width: 50 	}
 							]
-						},{	xtype				: 'combobox',
-							fieldLabel			: 'AI',
-							id					: 'fld_ai',
-							name				: 'fld_ai',
-							//afterLabelTextTpl	: required,
-							//allowBlank		: false,
-							labelSeparator		: ' ',
-							queryMode			: 'local',
-							store				: cbx_ai,
-							displayField		: 'ainame',
-							valueField			: 'aino',
-							hidden				: true
 						}]
 					},{ xtype			: 'container',
 						// width			: 350,
@@ -1434,8 +1632,10 @@
 										blur: function() {
 											var model = Ext.getCmp('cbx_model').getValue();
 											var pcb_name = Ext.getCmp('fld_pcb').getValue();
+											var stserial = Ext.getCmp('fld_stserial').getValue();
 											get_partaddress.proxy.setExtraParam('model_name',model);
 											get_partaddress.proxy.setExtraParam('pcb_name',pcb_name);
+											get_partaddress.proxy.setExtraParam('stserial',stserial);
 											get_partaddress.proxy.setExtraParam('location',this.getValue());
 											get_partaddress.loadPage(0);
 										}
@@ -1558,12 +1758,10 @@
 											Ext.getCmp('fld_loc').reset();
 											Ext.getCmp('fld_mag').reset();
 											Ext.getCmp('fld_ng').reset();
-											Ext.getCmp('fld_boardke').reset();
-											Ext.getCmp('fld_boardqty').reset();
-											Ext.getCmp('fld_pointqty').reset();
 											//popwindow.close();
 										},
 										failure	: function(form, action) {
+											console.log(action.result.msg);
 											Ext.Msg.show({
 												title		:'Failure - Input Data',
 												icon		: Ext.Msg.ERROR,

@@ -29,6 +29,8 @@
 		$return[$i]['inputid'] = $rs->fields['0'];
 		$return[$i]['ngloc'] = trim($rs->fields['1']);
 		$return[$i]['symptom'] = $rs->fields['2'];
+		$return[$i]['pcbname'] = $rs->fields['3'];
+		$return[$i]['stserial'] = $rs->fields['4'];
 		
 		$rs->MoveNext();
 	}
