@@ -2873,10 +2873,12 @@
 					var location = rec[0].data.loc;
 					var pcb_name = rec[0].data.pcb_name;
 					var process = rec[0].data.process;
+					var stserial = rec[0].data.start_serial;
 					get_partno.proxy.setExtraParam('model_name', model);
-					get_partno.proxy.setExtraParam('location', location);
+					get_partno.proxy.setExtraParam('loc', location);
 					get_partno.proxy.setExtraParam('pcb_name', pcb_name);
 					get_partno.proxy.setExtraParam('process', process);
+					get_partno.proxy.setExtraParam('start_serial', stserial);
 					
 					rejection_store.proxy.setExtraParam('inputid', inputid);
 					rejection_store.loadPage(1);
