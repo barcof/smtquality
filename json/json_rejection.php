@@ -35,6 +35,7 @@
 		$return[$i]['file_name']	= trim(substr($rs->fields['11'], 30));
 		$return[$i]['reelno']		= trim($rs->fields['12']);
 		$return[$i]['mdcode']		= trim($rs->fields['14']);
+		$return[$i]['ma_serialno']	= trim($rs->fields['15']);
 		$return[$i]['inputdate']	= $inputdate;
 		
 		$rs->MoveNext();

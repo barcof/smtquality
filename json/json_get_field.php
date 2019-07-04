@@ -1,6 +1,7 @@
 <?php
 	include '../connection.php';
-	$conn  = ADONewConnection('odbc');
+
+	$conn  = newADOConnection('odbc');
 	$dsn = "OCS_IM";
 	$conn->Connect($dsn,'SYSDBA','masterkey');
 		

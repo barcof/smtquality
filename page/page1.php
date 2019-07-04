@@ -76,7 +76,11 @@
 			var itemperpage = 25;
 			var itemprcode 	= 5;
 
-			var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+			var cellEditing_main = Ext.create('Ext.grid.plugin.CellEditing', {
+				clicksToEdit: 2
+			});
+
+			var cellEditing_detail = Ext.create('Ext.grid.plugin.CellEditing', {
 				clicksToEdit: 2
 			});
 
@@ -191,7 +195,7 @@
 			});
 			Ext.define('rejection_store',{
 				extend	: 'Ext.data.Model',
-				fields	: ['rejectid', 'inputid', 'partno', 'qtyselect', 'qtyng', 'repairedby', 'howtorepair', 'checkedby', 'fld_result', 'fld_desc', 'pic', 'file_name', 'reelno', 'inputdate','mdcode']
+				fields	: ['rejectid', 'inputid', 'partno', 'qtyselect', 'qtyng', 'repairedby', 'howtorepair', 'checkedby', 'fld_result', 'fld_desc', 'pic', 'file_name', 'reelno', 'inputdate','mdcode','ma_serialno']
 			});
 			Ext.define('get_partno_repair',{
 				extend	: 'Ext.data.Model',
@@ -479,7 +483,8 @@
 							},{ header		: 'Serial No',	//Serial Number
 								dataIndex	: 'serial_no',
 								width		: 100,
-								locked		: false
+								locked		: false,
+								hidden 		: true,
 							},{ header		: 'Board ID',
 								dataIndex	: 'boardid',
 								width		: 70,
@@ -598,7 +603,7 @@
 						selModel: {
 							selType: 'cellmodel'
 						},
-						plugins: [cellEditing],
+						plugins: [cellEditing_main],
 						tbar	: [{xtype:'tbspacer',width:10},
 								{	xtype	: 'button',
 									id		: 'btn_refresh',
@@ -662,14 +667,14 @@
 									scale	: 'medium',
 									handler	: rejection
 								},
-								{	xtype	: 'button',
-									id		: 'btn_input_serialno',
-									iconCls	: 'input',
-									iconAlign: 'top',
-									text	: 'Input Serial No',
-									scale	: 'medium',
-									handler	: input_serialno
-								},
+								// {	xtype	: 'button',
+								// 	id		: 'btn_input_serialno',
+								// 	iconCls	: 'input',
+								// 	iconAlign: 'top',
+								// 	text	: 'Input Serial No',
+								// 	scale	: 'medium',
+								// 	handler	: input_serialno
+								// },
 								{	xtype	: 'button',
 									id		: 'btn_src_serialno',
 									iconCls	: 'search',
@@ -3183,7 +3188,7 @@
 								layout		: 'fit',
 								autoScroll	: true,
 								items		: [{
-									xtype		: 'grid',
+									xtype		: 'grid', // GRID REJECTION
 									// layout      : 'fit',
 									id			: 'grid_rejection',
 									name		: 'grid_rejection',
@@ -3272,6 +3277,11 @@
 												 width		: 150,
 												 hidden 	: true,
 												 editor		: {xtype:'textfield',allowBlank:false}
+												},
+												{header		: 'MA Serial No',
+												 dataIndex	: 'ma_serialno',
+												 width		: 150,
+												 editor		: {xtype:'textfield',allowBlank:false}
 												}
 											]}
 										]},
@@ -3292,7 +3302,7 @@
 									selModel	: {
 										selType: 'cellmodel'
 									},
-									plugins		: [cellEditing],
+									plugins		: [cellEditing_detail],
 									bbar		: Ext.create('Ext.PagingToolbar', {
 										pageSize	: itemperpage,
 										store		: rejection_store,
@@ -3301,11 +3311,11 @@
 										items: [
 											{ xtype: 'button', text: 'Update', iconCls	: 'edit', scale: 'medium', iconAlign: 'left', handler: update_rejection  }
 										],
-										listeners	: {
-											afterrender: function(cmp) {
-												cmp.getComponent("refresh").hide();
-											}
-										}
+										// listeners	: {
+										// 	afterrender: function(cmp) {
+										// 		cmp.getComponent("refresh").hide();
+										// 	}
+										// }
 									})
 								}]
 							}]
@@ -3319,6 +3329,7 @@
 						minHeight		: 600,
 						layout			: 'fit',
 						animateTarget	: 'btn_add_reject',
+						closeAction		: 'destroy',
 						items			: panel_rejection,
 						bodyStyle		: 'background:#008080',
 						bodyBorder		: false,
@@ -3774,7 +3785,8 @@
 										fld_result: record[i].data.fld_result,
 										fld_desc: record[i].data.fld_desc,
 										pic: record[i].data.pic,
-										reelno: record[i].data.reelno
+										reelno: record[i].data.reelno,
+										ma_serialno: record[i].data.ma_serialno
 									},
 									success	: function(obj) {
 										var resp = obj.responseText;

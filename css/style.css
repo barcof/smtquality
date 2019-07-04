@@ -32,7 +32,8 @@ header{
 #txt-header{
     position:absolute;
     right:200px;
-    top:10px;
+    top:-10px;
+    _top:10px;
 }
 #txt-header p{
     color:#fff;
