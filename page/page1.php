@@ -578,7 +578,7 @@
 										Ext.getCmp('btn_input').hide();
 										Ext.getCmp('btn_update').hide();
 										Ext.getCmp('btn_del').hide();
-										Ext.getCmp('btn_input_serialno').hide();
+										// Ext.getCmp('btn_input_serialno').hide();
 										Ext.getCmp('btn_src_serialno').hide();
 										Ext.getCmp('btn_add_reject').hide();
 										Ext.getCmp('btn_settings').hide();
@@ -594,7 +594,7 @@
 										Ext.getCmp('btn_mch').hide();
 									} else {
 										Ext.getCmp('btn_settings').hide();
-										Ext.getCmp('btn_input_serialno').hide();
+										// Ext.getCmp('btn_input_serialno').hide();
 										Ext.getCmp('btn_src_serialno').hide();
 									}
 								} else { }
