@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 	include '../connection.php';
 	date_default_timezone_set("Asia/jakarta");
@@ -47,53 +48,57 @@
 	$getdate	= date('Y-m-d H:i:s');
 	$isvalid	= false;
 	
-	
-	try {
-		
-		//if no file uploaded
-		if($_FILES["fld_photo"]["error"] == 4) {
+	if ($_SESSION['iqrs_userid']	!= '' ){
+		try {
 			
-			$filename = null;
-			$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
-					'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
-					
-			$rs->Close();
-			
-			$var_msg = 1;
-			
-		} else {
-			
-			$allowed =  array('gif','png' ,'jpg', 'jpeg');
-			$ext = pathinfo($file, PATHINFO_EXTENSION);
-			if(in_array($ext,$allowed)) {
+			//if no file uploaded
+			if($_FILES["fld_photo"]["error"] == 4) {
 				
-				$filename = $dir.$file;
+				$filename = null;
+				$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+						'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
+						
+				$rs->Close();
 				
-				if (move_uploaded_file($tmpfile, $dir.$file)){
-					
-					$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
-					'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
-					
-					$rs->Close();
-					
-					$var_msg = 1;
-					
-				} else {
-					
-					$var_msg = 3;
-					
-				}
+				$var_msg = 1;
 				
 			} else {
 				
-				$var_msg = 2;
+				$allowed =  array('gif','png' ,'jpg', 'jpeg');
+				$ext = pathinfo($file, PATHINFO_EXTENSION);
+				if(in_array($ext,$allowed)) {
+					
+					$filename = $dir.$file;
+					
+					if (move_uploaded_file($tmpfile, $dir.$file)){
+						
+						$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+						'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
+						
+						$rs->Close();
+						
+						$var_msg = 1;
+						
+					} else {
+						
+						$var_msg = 3;
+						
+					}
+					
+				} else {
+					
+					$var_msg = 2;
+					
+				}
 				
 			}
-			
+		}
+		catch (exception $e) {
+			$var_msg = $db->ErrorNo();
 		}
 	}
-	catch (exception $e) {
-		$var_msg = $db->ErrorNo();
+	else {
+		$var_msg = 4;
 	}
 	// Message
 	switch ($var_msg){
@@ -122,6 +127,12 @@
 			echo "{
 				'success': false,
 				'msg': 'Failed to upload file'
+			}";
+		break;
+		case 4:
+			echo "{
+				'success': false,
+				'msg': 'Session Time Out, Please Refresh Browser'
 			}";
 		break;
 	}

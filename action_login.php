@@ -33,11 +33,11 @@ if (isset($_POST['submit'])) {
 					$signid = 0;
 				}*/
 			// Initializing Session
-				$_SESSION['iqrs_userid']		= $userid;
+				$_SESSION['iqrs_userid']	= $userid;
 				$_SESSION['iqrs_username']	= $username;
 				$_SESSION['iqrs_password']	= $password;
 				$_SESSION['iqrs_userlevel']	= $level;
-				$_SESSION['iqrs_pic']				= $pic;
+				$_SESSION['iqrs_pic']		= $pic;
 				//header('location: home.php'); // Redirecting To Other Page
 			}
 			else {
