@@ -206,7 +206,8 @@
 				fields: ['catval'],
 				data : [
 					{ "catval":"Touch Up" },
-					{ "catval":"Change Part" }
+					{ "catval":"Change Part" },
+					{ "catval":"Cleaning" }
 					// { "catval":"Touch Up + Change Part" }
 				]
 			});
