@@ -38,7 +38,7 @@
 		$getai->Close();
 		*/
 		
-		$getproblemno 	= $db->Execute("select problemno from tb_prcode where problemname = '{$smt}'");
+		$getproblemno 	= $db->Execute("select problemno from tb_prcode_new where problemname = '{$smt}'");
 		$problemno 		= $getproblemno->fields['0'];
 		$getproblemno->Close();
 		
@@ -54,8 +54,9 @@
 								ng = '{$ngno}', board_ke = '{$boardke}', board_ng_qty = '{$boardqty}', point_ng_qty = '{$pointqty}', svi_stat = '{$svi}', fld_output = '{$output}',
 								fld_point = '{$point}', tot_point = '{$totpoint}', cleaning_board = '{$cleaning}'
 				where inputid = '{$inputid}'";
-		*/		
-		$rs = $db->Execute("update tb_inqual_new set dateid = '{$date}', fld_group = '{$group}', fld_shift = '{$shift}', mch_name = '{$mchno}', model_name = '{$model}', start_serial = '{$stserial}', lot_no = '{$lotno}',lot_qty = '{$lotqty}', pcb_name = '{$pcb}', pwb_no = '{$pwb}', fld_proc = '{$proc}', smt = '{$problemno}', loc = '{$location}', magazineno = '{$magazineno}' ,ng = '{$ngno}', board_ke = '{$boardke}', board_ng_qty = '{$boardqty}', point_ng_qty = '{$pointqty}' where inputid = '{$inputid}'");
+		*/
+		echo $query = "update tb_inqual_new set dateid = '{$date}', fld_group = '{$group}', fld_shift = '{$shift}', mch_name = '{$mchno}', model_name = '{$model}', start_serial = '{$stserial}', lot_no = '{$lotno}',lot_qty = '{$lotqty}', pcb_name = '{$pcb}', pwb_no = '{$pwb}', fld_proc = '{$proc}', smt = '{$problemno}', loc = '{$location}', magazineno = '{$magazineno}' ,ng = '{$ngno}', board_ke = '{$boardke}', board_ng_qty = '{$boardqty}', point_ng_qty = '{$pointqty}' where inputid = '{$inputid}'";		
+		$rs = $db->Execute($query);
 		$rs->Close();
 		
 		$var_msg = 1;
