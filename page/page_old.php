@@ -618,7 +618,7 @@
 									iconAlign: 'top',
 									text	: 'Input Data',
 									scale	: 'medium',
-									hidden	: true,
+									// hidden	: true,
 									handler	: input
 								},
 								{ 	xtype	: 'button',
@@ -627,7 +627,7 @@
 									iconAlign: 'top',
 									text	: 'Update Data',
 									scale	: 'medium',
-									hidden	: true,
+									// hidden	: true,
 									handler	: update
 								},
 								{ 	xtype	: 'button',
@@ -636,7 +636,7 @@
 									iconAlign: 'top',
 									text	: 'Delete Data',
 									scale	: 'medium',
-									hidden	: true,
+									// hidden	: true,
 									handler	: del
 								},
 								{	xtype	: 'button',
