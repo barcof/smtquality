@@ -9,7 +9,7 @@
 	/**	run query **/
 			
 			$rs 			= $db->Execute(" declare @totalcount as int
-												exec DisplayRejection_new '{$inputid}', $start, $limit, @totalcount=@totalcount out");
+												exec DisplayRejection '{$inputid}', $start, $limit, @totalcount=@totalcount out");
 			$newdate		= date_create($rs->fields['13']);
 			$inputdate		= date_format($newdate, "Y-m-d H:i:s");
 			$totalcount 	= $rs->fields['15'];

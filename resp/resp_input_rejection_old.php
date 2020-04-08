@@ -55,7 +55,7 @@
 			if($_FILES["fld_photo"]["error"] == 4) {
 				
 				$filename = null;
-				$rs = $db->Execute("exec InsertRejection_new '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+				$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
 						'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
 						
 				$rs->Close();

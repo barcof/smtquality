@@ -6,7 +6,7 @@
 	$model_name		= $_REQUEST['fld_del_model'];
 	
 	try {
-		$get_rejectid = $db->Execute("select file_name from tb_rejection_new where inputid = '$inputid'"); // get file_name first
+		$get_rejectid = $db->Execute("select file_name from tb_rejection where inputid = '$inputid'"); // get file_name first
 		
 		while (!$get_rejectid->EOF){
 			
@@ -23,8 +23,8 @@
 		}
 		$get_rejectid->Close();
 		
-		$del_rejection 	= $db->Execute("delete from tb_rejection_new where inputid = '$inputid'");
-		$del_quality 	= $db->Execute("delete from tb_inqual_new where inputid = '$inputid' and model_name = '$model_name'");
+		$del_rejection 	= $db->Execute("delete from tb_rejection where inputid = '$inputid'");
+		$del_quality 	= $db->Execute("delete from tb_inqual where inputid = '$inputid' and model_name = '$model_name'");
 		$del_rejection->Close();
 		$del_quality->Close();
 		

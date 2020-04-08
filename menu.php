@@ -2,6 +2,7 @@
     <ul>
         <li class="left first"><a href="home.php?page=dashboard"><img class="home" src="img/home.png" height="20" width="20"></a></li>
         <li class="left"><a href="home.php?page=page1">COMMON QUALITY REPORT</a></li>
+        <li class="left"><a href="home.php?page=page_old">OLD REPORT DATA</a></li>
         <!-- <li class="left"><a href="home.php?page=page_oem">OEM QUALITY REPORT</a></li> -->
         <!--<li class="left"><a href="home.php?page=page2">OUTPUT CONTROL</a></li>
         <li class="left"><a href="home.php?page=page3">LINE REJECTION</a></li>-->

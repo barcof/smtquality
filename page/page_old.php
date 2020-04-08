@@ -9,18 +9,6 @@
 		Ext.require([
 			'Ext.ux.grid.FiltersFeature'
 		]);
-		/*Ext.override(Ext.grid.RowNumberer, {
-			renderer: function(value, metaData, record, rowIdx, colIdx, store) {
-				var rowspan = this.rowspan;
-				if (rowspan) {
-					metaData.tdAttr = 'rowspan="' + rowspan + '"';
-					alert(store.indexOfTotal ? (store.indexOfTotal(record) + 1) : (rowIdx + 1));
-				}
-				metaData.tdCls = Ext.baseCSSPrefix + 'x-grid-cell-row-numberer';
-				return store.indexOfTotal ? (store.indexOfTotal(record) + 1) : (rowIdx + 1);
-				//return store.indexOfTotal(record) + 1;
-			}
-		});*/
         Ext.override(Ext.form.TextField, {
 			enableKeyEvents:true,
 			onKeyUp: function (e,o){
@@ -35,11 +23,6 @@
 				this.fireEvent('keyup', this, e);
 			}
 		});
-		//if (window.location.search.indexOf('scopecss') !== -1) {
-		//	// We are using ext-all-scoped.css, so all rendered ExtJS Components must have a
-		//	// reset wrapper round them to provide localized CSS resetting.
-		//	Ext.scopeResetCSS = true;
-		//}
         Ext.onReady( function() {
             Ext.QuickTips.init();
 
@@ -164,7 +147,7 @@
 				enableGroupingMenu: true
 			});
 
-			// store data
+		// model data
 			Ext.define('disp_inqual',{
 					extend	: 'Ext.data.Model',
 					fields	: ['inputid','dateid','group','shift','mch','model_name','start_serial','serial_no','lot_no','lot_qty','pcb_name','pwb_no','process','ai','smt','loc','magazineno','ng','boardid','boardke','boardqty','pointqty','inputdate']
@@ -201,7 +184,9 @@
 				extend	: 'Ext.data.Model',
 				fields 	: ['partno']
 			});
-
+		// ----***----  //
+		
+		// store data
 			var cbx_howtorepair = Ext.create('Ext.data.Store', {
 				fields: ['catval'],
 				data : [
@@ -217,7 +202,7 @@
 				pageSize: itemperpage,
 				proxy	: {
 					type	: 'ajax',
-					url		: 'json/json_inqual.php',
+					url		: 'json/json_inqual_old.php',
 					reader	: {
 						type			: 'json',
 						root			: 'rows',
@@ -231,7 +216,7 @@
 				pageSize: itemprcode,
 				proxy	: {
 					type	: 'ajax',
-					url		: 'json/json_prcode.php',
+					url		: 'json/json_prcode_old.php',
 					reader	: {
 						type			: 'json',
 						root			: 'rows',
@@ -300,7 +285,7 @@
 				autoLoad: true,
 				proxy	: {
 					type	: 'ajax',
-					url		: 'json/json_cbx_prcode.php',
+					url		: 'json/json_cbx_prcode_old.php',
 					reader	: {
 						type			: 'json',
 						root			: 'rows',
@@ -378,7 +363,7 @@
 				autoLoad: true,
 				proxy	: {
 					type	: 'ajax',
-					url		: 'json/json_rejection.php',
+					url		: 'json/json_rejection_old.php',
 					reader	: {
 						type			: 'json',
 						root			: 'rows',
@@ -409,22 +394,22 @@
 					}
 				}
 			});
+		// ----***----  //
 
-			//	All about function
-				// ***
-					//	function untuk fontsize grid
-							function upsize(val) {
-								return '<font style="white-space:normal;">' + val + '</font>';
-							}
-							function content(val) {
-								return '<font size="2" style="font-family:sans-serif; white-space:normal;">' + Ext.String.ellipsis(val, 250, false) + '</font>';
-							}
-					//	end function untuk column bigsize
+		//	All about function
+			//	function untuk fontsize grid
+					function upsize(val) {
+						return '<font style="white-space:normal;">' + val + '</font>';
+					}
+					function content(val) {
+						return '<font size="2" style="font-family:sans-serif; white-space:normal;">' + Ext.String.ellipsis(val, 250, false) + '</font>';
+					}
+			//	end function untuk column bigsize
 
-					//	function required
-							var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
-					//	end of function required
-			// ----***----  //
+			//	function required
+					var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
+			//	end of function required
+		// ----***----  //
 
 			//	Grid data
 				var clock = Ext.create('Ext.toolbar.TextItem', {text: Ext.Date.format(new Date(), 'g:i:s A')});
@@ -633,6 +618,7 @@
 									iconAlign: 'top',
 									text	: 'Input Data',
 									scale	: 'medium',
+									hidden	: true,
 									handler	: input
 								},
 								{ 	xtype	: 'button',
@@ -641,6 +627,7 @@
 									iconAlign: 'top',
 									text	: 'Update Data',
 									scale	: 'medium',
+									hidden	: true,
 									handler	: update
 								},
 								{ 	xtype	: 'button',
@@ -649,6 +636,7 @@
 									iconAlign: 'top',
 									text	: 'Delete Data',
 									scale	: 'medium',
+									hidden	: true,
 									handler	: del
 								},
 								{	xtype	: 'button',
@@ -699,6 +687,7 @@
 									iconCls	: 'setting',
 									iconAlign: 'top',
 									scale	: 'medium',
+									hidden	: true,
 									menu	: [
 										{	text	: 'Problem Code',
 											iconCls	: 'machine-16',
@@ -1101,7 +1090,7 @@
 									var popwindow = this.up('window');
 									if (form.isValid()) {
 										form.submit({
-											url		: 'resp/resp_input_prodctrl.php',
+											url		: 'resp/resp_input_prodctrl_old.php',
 											waitMsg	: 'sending data',
 											success	: function(form, action) {
 												Ext.Msg.show({
@@ -1215,7 +1204,7 @@
 									var popwindow = this.up('window');
 									if (form.isValid()) {
 										form.submit({
-											url		: 'resp/resp_input_prcode.php',
+											url		: 'resp/resp_input_prcode_old.php',
 											waitMsg	: 'sending data',
 											success	: function(form, action) {
 												Ext.Msg.show({
@@ -1862,7 +1851,7 @@
 										var popwindow = this.up('window');
 										if (form.isValid()) {
 											form.submit({
-												url		: 'resp/resp_del_prcode.php',
+												url		: 'resp/resp_del_prcode_old.php',
 												waitMsg	: 'deleting data',
 												success	: function(form, action) {
 													Ext.Msg.show({
@@ -2829,7 +2818,7 @@
 							for (var i=0; i < record.length; i++) {
 								//alert(record[i].data.id_item+' ## '+record[i].data.result);
 								Ext.Ajax.request({
-									url		: 'resp/resp_update.php',
+									url		: 'resp/resp_update_old.php',
 									method	: 'POST',
 									params	: 'inputid='+record[i].data.inputid+'&dateid='+record[i].data.dateid+'&group='+record[i].data.group+'&shift='+record[i].data.shift+'&mch='+record[i].data.mch+'&lotno='+record[i].data.lot_no+'&lotqty='+record[i].data.lot_qty+'&model='+record[i].data.model_name+'&stserial='+record[i].data.start_serial+'&pcb='+record[i].data.pcb_name+'&pwb='+record[i].data.pwb_no+'&smt='+record[i].data.smt+'&process='+record[i].data.process+'&ai='+record[i].data.ai+'&location='+record[i].data.loc+'&magazineno='+record[i].data.magazineno+'&ng='+record[i].data.ng+'&boardke='+record[i].data.boardke+'&boardqty='+record[i].data.boardqty+'&pointqty='+record[i].data.pointqty,
 									success	: function(obj) {
@@ -3151,7 +3140,7 @@
 												var popwindow = this.up('window');
 												if (form.isValid()) {
 													form.submit({
-														url				: 'resp/resp_input_rejection.php',
+														url				: 'resp/resp_input_rejection_old.php',
 														waitMsg			: 'sending data',
 														submitEmptyText	: false,
 														params: 'inputcode='+0,
@@ -3416,7 +3405,7 @@
 								handler		: function(field) {
 									var cv_startdt 	= Ext.Date.format(Ext.getCmp('startdt').getValue(), 'Y-m-d');
 									var cv_enddt 	= Ext.Date.format(Ext.getCmp('enddt').getValue(), 'Y-m-d');
-									window.open('resp/resp_download.php?startdt='+cv_startdt+'&enddt='+cv_enddt+'');
+									window.open('resp/resp_download_old.php?startdt='+cv_startdt+'&enddt='+cv_enddt+'');
 								}
 							},{
 								xtype		: 'label',
@@ -3516,7 +3505,7 @@
 										var popwindow = this.up('window');
 										if (form.isValid()) {
 											form.submit({
-												url		: 'resp/resp_del_prodctrl.php',
+												url		: 'resp/resp_del_prodctrl_old.php',
 												waitMsg	: 'deleting data',
 												success	: function(form, action) {
 													Ext.Msg.show({
@@ -3771,7 +3760,7 @@
 							for (var i=0; i < record.length; i++) {
 								//alert(record[i].data.repairedby+' ## '+record[i].data.partno);
 								Ext.Ajax.request({
-									url		: 'resp/resp_update_rejection.php',
+									url		: 'resp/resp_update_rejection_old.php',
 									method	: 'POST',
 									//params	: 'rejectid='+record[i].data.rejectid+'&inputid='+record[i].data.inputid+'&qtyselect='+record[i].data.qtyselect+'&qtyng='+record[i].data.qtyng+'&partno='+record[i].data.partno+'&repairedby='+record[i].data.repairedby+'&howtorepair='+record[i].data.howtorepair+'&checkedby='+record[i].data.checkedby+'&fld_result='+record[i].data.fld_result+'&fld_desc='+record[i].data.fld_desc+'&pic='+record[i].data.pic,
 									params	: {

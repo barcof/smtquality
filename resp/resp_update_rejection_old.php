@@ -20,7 +20,7 @@
 	
 	try {
 		
-		$rs = $db->Execute("update tb_rejection_new set qtyselect = {$qtyselect}, qtyng = {$qtyng}, partno = '{$partno}', repairedby = '{$repairedby}', howtorepair = '{$howtorepair}', checkedby = '{$checkedby}', fld_result = '{$fld_result}', fld_desc = '{$fld_desc}', pic = '{$pic}', reelno = '{$reelno}', ma_serialno = '{$ma_serialno}' where inputid = '{$inputid}'");
+		$rs = $db->Execute("update tb_rejection set qtyselect = {$qtyselect}, qtyng = {$qtyng}, partno = '{$partno}', repairedby = '{$repairedby}', howtorepair = '{$howtorepair}', checkedby = '{$checkedby}', fld_result = '{$fld_result}', fld_desc = '{$fld_desc}', pic = '{$pic}', reelno = '{$reelno}', ma_serialno = '{$ma_serialno}' where inputid = '{$inputid}'");
 		$rs->Close();
 		
 		$var_msg = 1;

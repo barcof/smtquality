@@ -2,7 +2,7 @@
 	include '../connection.php';
 		
 	/**	run query **/
-			$rs 			= $db->Execute("select * from tb_prcode_new");
+			$rs 			= $db->Execute("select * from tb_prcode");
 			$return 		= array();
 	//	-----***-----  //
 	for ($i = 0; !$rs->EOF; $i++) {

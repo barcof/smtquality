@@ -9,7 +9,7 @@
 	$enddt		= date_format($getenddt, "Y-m-d");
 	
 	// select data yang akan di insert ke dalam file CSV
-	$rs = $db->Execute("exec GetDownloadField_new '{$startdt}','{$enddt}'");
+	$rs = $db->Execute("exec GetDownloadField '{$startdt}','{$enddt}'");
 	
 	//	save file
 	$fname = 'Control_Sheet_'.$startdt.'_to_'.$enddt.'.csv';

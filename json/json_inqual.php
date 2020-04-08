@@ -24,7 +24,7 @@
 			//$rs 			= $db->Execute(" declare @totalcount as int
 			//									exec DisplayInqual $start, $limit, '{$mchname}', '{$modelname}', {$stserial}, '{$lotno}', //'{$pcbname}', '{$pwbno}', '{$proc}', @totalcount=@totalcount out");
 			// echo " declare @totalcount as int exec DisplayInqual $start, $limit, '{$boardid}', '{$mchname}', '{$modelname}', '{$stserial}', @totalcount=@totalcount out";
-			$rs = $db->Execute(" declare @totalcount as int exec DisplayInqual $start, $limit, '{$boardid}', '{$mchname}', '{$modelname}', '{$stserial}', @totalcount=@totalcount out");
+			$rs = $db->Execute(" declare @totalcount as int exec DisplayInqual_new $start, $limit, '{$boardid}', '{$mchname}', '{$modelname}', '{$stserial}', @totalcount=@totalcount out");
 			$totalcount = $rs->fields['23'];
 			$return = array();
 			

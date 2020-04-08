@@ -14,7 +14,7 @@
 	*/
 	
 	try {
-		$rs = $db->Execute("delete from tb_prcode where problemno = '$prno' and problemname = '$prname'");
+		$rs = $db->Execute("delete from tb_prcode_new where problemno = '$prno' and problemname = '$prname'");
 		$rs->Close();
 		
 		$var_msg = 1;

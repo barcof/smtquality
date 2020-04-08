@@ -7,7 +7,7 @@
 	//$getdate	= date('Y-m-d H:i:s');
 	
 	try {
-		$rs = $db->Execute("insert into tb_prcode_new select '{$prno}', '{$prname}'");
+		$rs = $db->Execute("insert into tb_prcode select '{$prno}', '{$prname}'");
 		$rs->Close();
 		
 		$var_msg = 1;

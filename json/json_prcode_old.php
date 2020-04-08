@@ -13,7 +13,7 @@
 */	
 	/**	run query **/
 			$rs 			= $db->Execute(" declare @totalcount as int
-												exec DisplayPrcode_new $start, $limit, @totalcount=@totalcount out");
+												exec DisplayPrcode $start, $limit, @totalcount=@totalcount out");
 			$totalcount 	= $rs->fields['2'];
 			$return 		= array();
 			

@@ -32,7 +32,7 @@
 	
 	
 	try {
-		$rs = $db->Execute("update tb_inqual set serial_no='{$serialno}', pic_update='{$picupdate}', updatedate='{$getdate}' 
+		$rs = $db->Execute("update tb_inqual_new set serial_no='{$serialno}', pic_update='{$picupdate}', updatedate='{$getdate}' 
 							where inputid='{$inputid}'");
 		
 		$rs->Close();

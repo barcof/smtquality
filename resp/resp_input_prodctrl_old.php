@@ -54,7 +54,7 @@
 
 
 	try {
-		$rs = $db->Execute("exec InsertInqual_new '{$date}','{$group}','{$shift}','{$board}','{$model}','{$st_serial}',
+		$rs = $db->Execute("exec InsertInqual '{$date}','{$group}','{$shift}','{$board}','{$model}','{$st_serial}',
 					'','{$lotno}','{$lotqty}','{$pcb}','{$pwb}','{$proc}','{$prcode}','{$location}','{$magazineno}',
 					'{$ng}','{$boardke}','{$boardqty}','{$pointqty}','{$getdate}','{$userip}','{$levelid}',{$inputstatus}");
 

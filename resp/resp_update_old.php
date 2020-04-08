@@ -55,7 +55,7 @@
 								fld_point = '{$point}', tot_point = '{$totpoint}', cleaning_board = '{$cleaning}'
 				where inputid = '{$inputid}'";
 		*/		
-		$rs = $db->Execute("update tb_inqual_new set dateid = '{$date}', fld_group = '{$group}', fld_shift = '{$shift}', mch_name = '{$mchno}', model_name = '{$model}', start_serial = '{$stserial}', lot_no = '{$lotno}',lot_qty = '{$lotqty}', pcb_name = '{$pcb}', pwb_no = '{$pwb}', fld_proc = '{$proc}', smt = '{$problemno}', loc = '{$location}', magazineno = '{$magazineno}' ,ng = '{$ngno}', board_ke = '{$boardke}', board_ng_qty = '{$boardqty}', point_ng_qty = '{$pointqty}' where inputid = '{$inputid}'");
+		$rs = $db->Execute("update tb_inqual set dateid = '{$date}', fld_group = '{$group}', fld_shift = '{$shift}', mch_name = '{$mchno}', model_name = '{$model}', start_serial = '{$stserial}', lot_no = '{$lotno}',lot_qty = '{$lotqty}', pcb_name = '{$pcb}', pwb_no = '{$pwb}', fld_proc = '{$proc}', smt = '{$problemno}', loc = '{$location}', magazineno = '{$magazineno}' ,ng = '{$ngno}', board_ke = '{$boardke}', board_ng_qty = '{$boardqty}', point_ng_qty = '{$pointqty}' where inputid = '{$inputid}'");
 		$rs->Close();
 		
 		$var_msg = 1;
