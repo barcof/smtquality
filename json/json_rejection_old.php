@@ -12,7 +12,7 @@
 												exec DisplayRejection '{$inputid}', $start, $limit, @totalcount=@totalcount out");
 			$newdate		= date_create($rs->fields['13']);
 			$inputdate		= date_format($newdate, "Y-m-d H:i:s");
-			$totalcount 	= $rs->fields['15'];
+			$totalcount 	= $rs->fields['16'];
 			$return 		= array();
 			
 			
