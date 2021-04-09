@@ -8,7 +8,7 @@
     $user = 'sa';
     $pass = 'JvcSql@123';
     $dbase = 'db_imquality';
-	$server = "Driver={SQL Server};Server=SVRDBN\JEINSQL2012;Database=$dbase;";
+	$server = "Driver={SQL Server};Server=SVRDBN\JEINSQL2012;Database=$dbase;app=SMTQUALITY_IQRS";
 
     $db = ADONewConnection($dbasetype);
     $db->Connect($server, $user, $pass);
