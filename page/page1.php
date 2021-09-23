@@ -574,6 +574,7 @@
 								delay: 100
 							},
 							afterrender: function() {
+								/*
 								if (<?=$_SESSION['iqrs_userlevel']?>>0) {
 									if (<?=$_SESSION['iqrs_userlevel']?>==5) {
 										Ext.getCmp('btn_input').hide();
@@ -599,6 +600,33 @@
 										Ext.getCmp('btn_src_serialno').hide();
 									}
 								} else { }
+								*/
+								switch(<?=$_SESSION['iqrs_userlevel']?>) {
+									case 2:
+										Ext.getCmp('btn_settings').hide();
+									break;
+									case 3:
+										Ext.getCmp('btn_input').hide();
+										Ext.getCmp('btn_update').hide();
+										Ext.getCmp('btn_del').hide();
+										Ext.getCmp('btn_add_reject').hide();
+										Ext.getCmp('btn_settings').hide();
+										Ext.getCmp('btn_src').hide();
+									break;
+									case 4:
+										Ext.getCmp('btn_settings').hide();
+										Ext.getCmp('btn_src_serialno').hide();
+									break;
+									case 5:
+										Ext.getCmp('btn_input').hide();
+										Ext.getCmp('btn_update').hide();
+										Ext.getCmp('btn_del').hide();
+										// Ext.getCmp('btn_input_serialno').hide();
+										Ext.getCmp('btn_src_serialno').hide();
+										Ext.getCmp('btn_add_reject').hide();
+										Ext.getCmp('btn_settings').hide();
+									break;
+								}
 							}
 						},
 						selModel: {

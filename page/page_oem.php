@@ -741,6 +741,7 @@
 					delay: 100
 				},
 				afterrender: function() {
+					/*
 					if (<?=$_SESSION['iqrs_userlevel']?>>0) {
 						if (<?=$_SESSION['iqrs_userlevel']?>==5) {
 							Ext.getCmp('btn_input').hide();
@@ -768,6 +769,7 @@
 					}  else {
 
 					}
+					*/
 					
 				}
 			},
