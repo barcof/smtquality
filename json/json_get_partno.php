@@ -1,7 +1,7 @@
 <?php
 	include '../connection.php';
 
-	$dbtrc =& ADONewConnection('odbc_mssql');
+	$dbtrc = ADONewConnection('odbc_mssql');
 	$dsn = "Driver={SQL Server};Server=SVRDBN\JEINSQL2012TRC;Database=SMTPROS;";
 	$dbtrc->Connect($dsn,'sa','JvcSql@123');
 		

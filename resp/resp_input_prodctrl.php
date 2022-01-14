@@ -32,7 +32,7 @@
 	$st_serial = $_REQUEST['fld_stserial'];
 	$lotno = $_REQUEST['fld_lotno'];
 	$lotqty	= $_REQUEST['fld_lotqty'];
-	$pcb = $_REQUEST['fld_pcb'];
+	$pcb = $_REQUEST['fld_pcbname'];
 	$pwb = $_REQUEST['fld_pwb'];
 	$proc = $_REQUEST['fld_proc'];
 	$prcode	= $_REQUEST['fld_prcode'];
@@ -52,7 +52,8 @@
 		$date = $_REQUEST['fld_date'];
 	}
 
-
+	return;
+	
 	try {
 		$rs = $db->Execute("exec InsertInqual_new '{$date}','{$group}','{$shift}','{$board}','{$model}','{$st_serial}',
 					'','{$lotno}','{$lotqty}','{$pcb}','{$pwb}','{$proc}','{$prcode}','{$location}','{$magazineno}',

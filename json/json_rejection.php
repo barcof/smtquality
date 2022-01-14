@@ -5,14 +5,14 @@
 	$limit 		= @$_REQUEST["limit"];
 	$start		= ($page*$limit)+1;
 
-	$inputid	= $_REQUEST['inputid'];
+	$inputid	= @$_REQUEST['inputid'];
 	/**	run query **/
 			
 			$rs 			= $db->Execute(" declare @totalcount as int
 												exec DisplayRejection_new '{$inputid}', $start, $limit, @totalcount=@totalcount out");
-			$newdate		= date_create($rs->fields['13']);
+			$newdate		= date_create(@$rs->fields['13']);
 			$inputdate		= date_format($newdate, "Y-m-d H:i:s");
-			$totalcount 	= $rs->fields['16'];
+			$totalcount 	= @$rs->fields['16'];
 			$return 		= array();
 			
 			
