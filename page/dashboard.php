@@ -42,14 +42,12 @@
 			 		}, config)]);
 			}
 		});
-		Ext.define('Chart', {
-			extend: 'Ext.data.Model',
-			fields: ['line', 'Missing', 'Wrong Part', 'Wrong Polarity', 'Slanting', 'Shifting', 'Short', 'Dry Joint', 'Floating', 'Over Bonding', 'Others', 'Lay Back', 'Chip Scatter', 'Poor Soldier', 'Manual IC', 'Over Solder', 'Tailing', 'Foreign Material', 'Korosi(Akame/Red Eye)', 'Slip Mounting', 'Part Chipping']
-		});
-
+		
 		var chart_store = Ext.create('Ext.data.Store', {
 			model	: 'Chart',
-			autoLoad: true,
+			fields: ['line', 'BROKEN', 'BUBBLE', 'CHIP SCATTER', 'CHIPPING','COLD JOINT','DIRTY','DRY JOINT','EXTRA PART','FLOATING','FOREIGN MATERIAL','LAYBACK','MISSING','NO SOLDER','OVER BONDING',
+      					'PATTERN O/C','PATTERN S/C','POOR SOLDER','RESIST','RUSTY','SHIFTING','SLANTING','SLIP INSERT','SOLDER BALL','SOLDER SHORT','TOMBSTONE','WRONG PART','WRONG POLARITY','OTHERS','CLEANING BOARD','mchname'],
+			autoLoad: false,
 			proxy	: {
 				type	: 'ajax',
 				url		: 'json/json_summary.php',
@@ -86,27 +84,36 @@
 				enableTextSelection : true
 			},
 			columns: [
-				{ text 	: 'Line',width 	: 120, sortable : true, dataIndex 	: 'line' },
-				{ text 	: 'Missing',width 	: 60, sortable 	: true, dataIndex 	: 'Missing',align: 'center', renderer: color },
-				{ text 	: 'Wrong Part',width 	: 70, sortable 	: true, dataIndex 	: 'Wrong Part',align: 'center', renderer: color },
-				{ text 	: 'Wrong Polarity',width 	: 95, sortable 	: true, dataIndex 	: 'Wrong Polarity',align: 'center', renderer: color },
-				{ text 	: 'Slanting',width 	: 60, sortable 	: true, dataIndex 	: 'Slanting',align: 'center', renderer: color },
-				{ text  : 'Shifting',width  	: 60, sortable 	: true, dataIndex		: 'Shifting',align: 'center', renderer: color },
-				{ text  : 'Short',width   : 50, sortable 	: true, dataIndex 	: 'Short',align: 'center', renderer: color },
-				{ text  : 'Dry Joint',width   : 60, sortable 	: true, dataIndex 	: 'Dry Joint',align: 'center', renderer: color },
-				{ text  : 'Floating',width   : 60, sortable 	: true, dataIndex 	: 'Floating',align: 'center', renderer: color },
-				{ text  : 'Over Bonding',width   : 85, sortable 	: true, dataIndex 	: 'Over Bonding',align: 'center', renderer: color },
-				{ text  : 'Others',width   : 50, sortable 	: true, dataIndex 	: 'Others',align: 'center', renderer: color },
-				{ text  : 'Lay Back',width   : 60, sortable 	: true, dataIndex 	: 'Lay Back',align: 'center', renderer: color },
-				{ text  : 'Chip Scatter',width   : 85, sortable 	: true, dataIndex 	: 'Chip Scatter',align: 'center', renderer: color },
-				{ text  : 'Poor Soldier',width   : 85, sortable 	: true, dataIndex 	: 'Poor Soldier',align: 'center', renderer: color },
-				{ text  : 'Manual IC',width   : 70, sortable 	: true, dataIndex 	: 'Manual IC',align: 'center', renderer: color },
-				{ text  : 'Over Solder',width   : 85, sortable 	: true, dataIndex 	: 'Over Solder',align: 'center', renderer: color },
-				{ text  : 'Tailing',width   : 60, sortable 	: true, dataIndex 	: 'Tailing',align: 'center', renderer: color },
-				{ text  : 'Foreign Material',width   : 120, sortable : true, dataIndex 	: 'Foreign Material',align: 'center', renderer: color },
-				{ text  : 'Korosi(Akame/Red Eye)',width 	: 120, sortable : true, dataIndex   : 'Korosi(Akame/Red Eye)',align: 'center', renderer: color },
-				{ text  : 'Slip Mounting',width   : 70, sortable 	: true, dataIndex 	: 'Slip Mounting',align: 'center', renderer: color },
-				{ text  : 'Part Chipping',width   : 70, sortable 	: true, dataIndex 	: 'Part Chipping',align: 'center', renderer: color }
+				{ text: 'Line',				flex: 1, sortable: true, dataIndex: 'mchname' },
+				{ text: 'BROKEN',			flex: 1, sortable: true, dataIndex: 'BROKEN',			align: 'center', renderer: color },
+				{ text: 'BUBBLE',			flex: 1, sortable: true, dataIndex: 'BUBBLE',			align: 'center', renderer: color },
+				{ text: 'CHIP SCATTER',		flex: 1, sortable: true, dataIndex: 'CHIP SCATTER',		align: 'center', renderer: color },
+				{ text: 'CHIPPING',			flex: 1, sortable: true, dataIndex: 'CHIPPING',			align: 'center', renderer: color },
+				{ text: 'COLD JOINT',		flex: 1, sortable: true, dataIndex: 'COLD JOINT',		align: 'center', renderer: color },
+				{ text: 'DIRTY',			flex: 1, sortable: true, dataIndex: 'DIRTY',			align: 'center', renderer: color },
+				{ text: 'DRY JOINT',		flex: 1, sortable: true, dataIndex: 'DRY JOINT',		align: 'center', renderer: color },
+				{ text: 'EXTRA PART',		flex: 1, sortable: true, dataIndex: 'EXTRA PART',		align: 'center', renderer: color },
+				{ text: 'FLOATING',			flex: 1, sortable: true, dataIndex: 'FLOATING',			align: 'center', renderer: color },
+				{ text: 'FOREIGN MATERIAL',	flex: 1, sortable: true, dataIndex: 'FOREIGN MATERIAL',	align: 'center', renderer: color },
+				{ text: 'LAYBACK',			flex: 1, sortable: true, dataIndex: 'LAYBACK',			align: 'center', renderer: color },
+				{ text: 'MISSING',			flex: 1, sortable: true, dataIndex: 'MISSING',			align: 'center', renderer: color },
+				{ text: 'NO SOLDER',		flex: 1, sortable: true, dataIndex: 'NO SOLDER',		align: 'center', renderer: color },
+				{ text: 'OVER BONDING',		flex: 1, sortable: true, dataIndex: 'OVER BONDING',		align: 'center', renderer: color },
+				{ text: 'PATTERN O/C',		flex: 1, sortable: true, dataIndex: 'PATTERN O/C',		align: 'center', renderer: color },
+				{ text: 'PATTERN S/C',		flex: 1, sortable: true, dataIndex: 'PATTERN S/C',		align: 'center', renderer: color },
+				{ text: 'POOR SOLDER',		flex: 1, sortable: true, dataIndex: 'POOR SOLDER',		align: 'center', renderer: color },
+				{ text: 'RESIST',			flex: 1, sortable: true, dataIndex: 'RESIST',			align: 'center', renderer: color },
+				{ text: 'RUSTY',			flex: 1, sortable: true, dataIndex: 'RUSTY',			align: 'center', renderer: color },
+				{ text: 'SHIFTING',			flex: 1, sortable: true, dataIndex: 'SHIFTING',			align: 'center', renderer: color },
+				{ text: 'SLANTING',			flex: 1, sortable: true, dataIndex: 'SLANTING',			align: 'center', renderer: color },
+				{ text: 'SLIP INSERT',		flex: 1, sortable: true, dataIndex: 'SLIP INSERT',		align: 'center', renderer: color },
+				{ text: 'SOLDER BALL',		flex: 1, sortable: true, dataIndex: 'SOLDER BALL',		align: 'center', renderer: color },
+				{ text: 'SOLDER SHORT',		flex: 1, sortable: true, dataIndex: 'SOLDER SHORT',		align: 'center', renderer: color },
+				{ text: 'TOMBSTONE',		flex: 1, sortable: true, dataIndex: 'TOMBSTONE',		align: 'center', renderer: color },
+				{ text: 'WRONG PART',		flex: 1, sortable: true, dataIndex: 'WRONG PART',		align: 'center', renderer: color },
+				{ text: 'WRONG POLARITY',	flex: 1, sortable: true, dataIndex: 'WRONG POLARITY',	align: 'center', renderer: color },
+				{ text: 'OTHERS',			flex: 1, sortable: true, dataIndex: 'OTHERS',			align: 'center', renderer: color },
+				{ text: 'CLEANING BOARD',	flex: 1, sortable: true, dataIndex: 'CLEANING BOARD',	align: 'center', renderer: color }
 			],
 
 //			listeners: {
@@ -152,21 +159,22 @@
 			axes: [{
 				type: 'Numeric',
 				position: 'left',
-				fields: ['Missing','Wrong Part','Wrong Polarity','Slanting','Shifting','Short', 'Dry Joint', 'Floating', 'Over Bonding', 'Others', 'Lay Back', 'Chip Scatter', 'Poor Soldier', 'Manual IC', 'Over Solder', 'Tailing', 'Foreign Material', 'Korosi(Akame/Red Eye)', 'Slip Mounting', 'Part Chipping'],
+				fields: ['BROKEN', 'BUBBLE', 'CHIP SCATTER', 'CHIPPING','COLD JOINT','DIRTY','DRY JOINT','EXTRA PART','FLOATING','FOREIGN MATERIAL','LAYBACK','MISSING',
+						'NO SOLDER','OVER BONDING','PATTERN O/C','PATTERN S/C','POOR SOLDER','RESIST','RUSTY','SHIFTING','SLANTING','SLIP INSERT','SOLDER BALL','SOLDER SHORT','TOMBSTONE','WRONG PART','WRONG POLARITY','OTHERS','CLEANING BOARD'],
 				grid: true
 			}, {
 				type: 'Category',
 				position: 'bottom',
 				fields: ['line'],
 				label: {
-            renderer: function(v) {
-                return Ext.String.ellipsis(v, 20, false);
-            },
-            font: '10px Arial',
-            rotate: {
-                degrees: 270
-            },
-        }
+					renderer: function(v) {
+						return Ext.String.ellipsis(v, 20, false);
+					},
+					font: '10px Arial',
+					rotate: {
+						degrees: 270
+					}
+        		}
 			}],
 			series: [{
 				type: 'column',
@@ -176,7 +184,8 @@
 				label: {
 	             	contrast: true,
 	             	display: 'insideStart',
-	             	field: ['Missing','Wrong Part','Wrong Polarity','Slanting','Shifting','Short', 'Dry Joint', 'Floating', 'Over Bonding', 'Others', 'Lay Back', 'Chip Scatter', 'Poor Soldier', 'Manual IC', 'Over Solder', 'Tailing', 'Foreign Material', 'Korosi(Akame/Red Eye)', 'Slip Mounting', 'Part Chipping'],
+	             	field: ['BROKEN', 'BUBBLE', 'CHIP SCATTER', 'CHIPPING','COLD JOINT','DIRTY','DRY JOINT','EXTRA PART','FLOATING','FOREIGN MATERIAL','LAYBACK','MISSING',
+						'NO SOLDER','OVER BONDING','PATTERN O/C','PATTERN S/C','POOR SOLDER','RESIST','RUSTY','SHIFTING','SLANTING','SLIP INSERT','SOLDER BALL','SOLDER SHORT','TOMBSTONE','WRONG PART','WRONG POLARITY','OTHERS','CLEANING BOARD'],
 							 //color: '#000',
 	             	orientation: 'horizontal','text-anchor': 'top',
 					renderer: function(value, label, storeItem, item, i, display, animate, index) {
@@ -184,7 +193,8 @@
 	            	}
          		},
 				xField: 'line',
-				yField: ['Missing','Wrong Part','Wrong Polarity','Slanting','Shifting','Short', 'Dry Joint', 'Floating', 'Over Bonding', 'Others', 'Lay Back', 'Chip Scatter', 'Poor Soldier', 'Manual IC', 'Over Solder', 'Tailing', 'Foreign Material', 'Korosi(Akame/Red Eye)', 'Slip Mounting', 'Part Chipping'],
+				yField: ['BROKEN', 'BUBBLE', 'CHIP SCATTER', 'CHIPPING','COLD JOINT','DIRTY','DRY JOINT','EXTRA PART','FLOATING','FOREIGN MATERIAL','LAYBACK','MISSING',
+						'NO SOLDER','OVER BONDING','PATTERN O/C','PATTERN S/C','POOR SOLDER','RESIST','RUSTY','SHIFTING','SLANTING','SLIP INSERT','SOLDER BALL','SOLDER SHORT','TOMBSTONE','WRONG PART','WRONG POLARITY','OTHERS','CLEANING BOARD'],
 				stacked: true
 				// tips: {
 					// trackMouse: true,
