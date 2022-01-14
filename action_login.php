@@ -20,11 +20,11 @@ if (isset($_POST['submit'])) {
 		//$sqlselect = "select * from data_user where pass=MD5('$pass') AND userid='$id'";
 
 		$rs = $db->Execute("select * from tb_user where username = '".$id."' and password = '".$pass."'");
-		$userid 		= $rs->fields[0];
-		$username 	= $rs->fields[1];
-		$password 	= $rs->fields[2];
-		$level  		= $rs->fields[3];
-		$pic    		= $rs->fields[4];
+		$userid 		= @$rs->fields[0];
+		$username 		= @$rs->fields[1];
+		$password 		= @$rs->fields[2];
+		$level  		= @$rs->fields[3];
+		$pic    		= @$rs->fields[4];
 
 			if (!$rs-> EOF)
 			{
