@@ -51,8 +51,6 @@
 	} else {
 		$date = $_REQUEST['fld_date'];
 	}
-
-	return;
 	
 	try {
 		$rs = $db->Execute("exec InsertInqual_new '{$date}','{$group}','{$shift}','{$board}','{$model}','{$st_serial}',

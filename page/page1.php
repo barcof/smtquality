@@ -681,7 +681,7 @@
 									id		: 'btn_refresh',
 									iconCls	: 'refresh',
 									iconAlign: 'top',
-									text 	: 'Refresh',
+									text 	: 'REFRESH',
 									tooltip	: 'Refresh',
 									scale	: 'medium',
 									handler : function (){
@@ -702,7 +702,7 @@
 									id		: 'btn_input',
 									iconCls	: 'input',
 									iconAlign: 'top',
-									text	: 'Input Data',
+									text	: 'INPUT',
 									scale	: 'medium',
 									handler	: input
 								},
@@ -710,7 +710,7 @@
 									id		: 'btn_update',
 									iconCls	: 'update',
 									iconAlign: 'top',
-									text	: 'Update Data',
+									text	: 'UPDATE',
 									scale	: 'medium',
 									handler	: update
 								},
@@ -718,7 +718,7 @@
 									id		: 'btn_del',
 									iconCls	: 'delete',
 									iconAlign: 'top',
-									text	: 'Delete Data',
+									text	: 'DELETE',
 									scale	: 'medium',
 									handler	: del
 								},
@@ -726,7 +726,7 @@
 									id		: 'btn_src',
 									iconCls	: 'search',
 									iconAlign: 'top',
-									text	: 'Search Data',
+									text	: 'SEARCH',
 									scale	: 'medium',
 									handler	: search
 									//hidden	: true // remove this to show search button
@@ -735,7 +735,7 @@
 									id		: 'btn_add_reject',
 									iconCls	: 'reject',
 									iconAlign: 'top',
-									text	: 'Follow Up',
+									text	: 'FOLLOW UP',
 									scale	: 'medium',
 									handler	: rejection
 								},
@@ -751,7 +751,7 @@
 									id		: 'btn_src_serialno',
 									iconCls	: 'search',
 									iconAlign: 'top',
-									text	: 'Search Serial',
+									text	: 'FIND SERIAL',
 									scale	: 'medium',
 									handler	: search_serialno
 								},
@@ -760,12 +760,12 @@
 									id		: 'btn_download',
 									iconCls	: 'download',
 									iconAlign: 'top',
-									text	: 'Download',
+									text	: 'DOWNLOAD',
 									scale	: 'medium',
 									handler	: download
 								},
 								'->',
-								{	text  	: 'Settings',
+								{	text  	: 'SETTINGS',
 									id		: 'btn_settings',
 									iconCls	: 'setting',
 									iconAlign: 'top',
