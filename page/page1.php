@@ -1059,10 +1059,10 @@
 								id					: 'fld_model',
 								name				: 'fld_model',
 							},
-							{	xtype				: 'combobox',
+							{	xtype				: 'combobox', // START SERIAL
 								id					: 'fld_stserial',
 								name				: 'fld_stserial',
-								fieldLabel			: 'Start Serial', // START SERIAL
+								fieldLabel			: 'Start Serial', 
 								afterLabelTextTpl	: required,
 								allowBlank			: false,
 								labelSeparator		: ' ',
@@ -1072,6 +1072,12 @@
 								valueField			: 'start_serial',
 								matchFieldWidth		: false,
 								disabled			: true,
+								tpl: '<tpl for=".">' +
+									'<tpl if="lot_no != 0">' +
+									'<div class="x-boundlist-item style="border:1px solid #fff; letter-spacing:2.5px;padding:0 5px"><h2><b>{start_serial} - {lot_no}</b></h2></div>' +
+									'<tpl else>' +
+									'<div class="x-boundlist-item style="border:1px solid #fff; letter-spacing:2.5px;padding:0 5px"><h2><b>{start_serial}</b></h2></div>' +
+									'</tpl></tpl>',
 								listeners 			: {
 									select: function(combo, records, eOpts) {
 										Ext.getCmp('fld_lotno').setValue(records[0].get('lot_no'));
