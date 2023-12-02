@@ -3,6 +3,11 @@
 	error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 	include '../connection.php';
 	date_default_timezone_set("Asia/jakarta");
+
+	// connection for SMTPROS DBY
+    $con_dby =& ADONewConnection('odbc_mssql');
+    $dsn = "Driver={SQL Server};Server=SVRDBY\JEINSQL2017P;Database=SMTPROS;";
+    $con_dby->Connect($dsn,'sa','JvcSql@123');
 	
 	if (getenv('HTTP_CLIENT_IP')){
         $userip = getenv('HTTP_CLIENT_IP');
@@ -50,7 +55,6 @@
 	
 	if ($_SESSION['iqrs_userid']	!= '' ){
 		try {
-			
 			//if no file uploaded
 			if($_FILES["fld_photo"]["error"] == 4) {
 				
@@ -72,7 +76,7 @@
 					
 					if (move_uploaded_file($tmpfile, $dir.$file)){
 						
-						$rs = $db->Execute("exec InsertRejection '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
+						$rs = $db->Execute("exec InsertRejection_new '{$inputid}', '{$partno}', '{$selectqty}', '{$ngqty}', '{$repairby}', '{$howtorepair}', '{$checkby}', '{$result}', '{$desc}', '{$pic}',
 						'{$reel}', '{$filename}', '{$getdate}', '{$userip}'");
 						
 						$rs->Close();
@@ -92,6 +96,27 @@
 				}
 				
 			}
+
+			// check if board id already input and two first characters are YJ
+			$q_get_boardid = "SELECT fld_result FROM tb_rejection_new WHERE inputid = '{$inputid}'";
+			$get_boardid = $db->Execute($q_get_boardid);
+			$boardcode = substr($get_boardid->fields[0],0,2);
+			$boardid = $get_boardid->fields[0];
+
+			if ($boardcode == 'YJ') {
+				// get latest barcode board from the latest rowid
+				$q_get_barcode = "SELECT rowid, barcode FROM tblAOIResultBoard WHERE barcode = '{$boardid}' AND aoijudgment = 'NG' ORDER BY rowid DESC";
+				$get_barcode = $con_dby->Execute($q_get_barcode);
+				$rowid = $get_barcode->fields[0];
+				$barcode = $get_barcode->fields[1];
+
+				// update userjudgment
+				$q_update_barcode = "UPDATE tblAOIResultBoard SET userjudgment = 'PASS' WHERE rowid = '{$rowid}' AND barcode = '{$barcode}'";
+				$con_dby->Execute($q_get_barcode);
+			}
+
+
+
 		}
 		catch (exception $e) {
 			$var_msg = $db->ErrorNo();

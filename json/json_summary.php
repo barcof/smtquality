@@ -10,6 +10,7 @@
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 	/**	run query **/
 			$rs = $db->Execute("exec DisplaySummary_new '{$sdate}', '{$edate}'");
+			// $rs = $db->Execute("exec DisplaySummary_new '2023-07-13', '2023-07-13'");
 			$return = $rs->getAll();
 			// $return 		= array();
 	//	-----***-----  //
