@@ -112,7 +112,7 @@
 
 				// update userjudgment
 				$q_update_barcode = "UPDATE tblAOIResultBoard SET userjudgment = 'PASS' WHERE rowid = '{$rowid}' AND barcode = '{$barcode}'";
-				$con_dby->Execute($q_get_barcode);
+				$con_dby->Execute($q_update_barcode);
 			}
 
 
