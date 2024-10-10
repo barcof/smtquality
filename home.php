@@ -32,8 +32,8 @@
 				<meta charset="utf-8">
 				<meta http-equiv="X-UA-Compatible" content="IE=edge">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link rel="stylesheet" href="css/style.css">
-				<link rel="stylesheet" href="css/icon-style.css">
+				<link rel="stylesheet" type="text/css" href="css/style.css?version=2">
+				<link rel="stylesheet" type="text/css" href="css/icon-style.css">
 				<link rel="shortcut icon" href="img/iqrs.png">
 				<script type="text/javascript" src="../framework/extjs-4.2.2/ext-all.js"></script>
 				<link rel="stylesheet" type="text/css" href="../framework/extjs-4.2.2/resources/css/ext-all-gray.css" />
